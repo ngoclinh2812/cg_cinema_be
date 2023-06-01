@@ -1,8 +1,7 @@
-package com.studentmanagement.linhoang.service;
+package com.codegym.c11.service;
 
-import com.studentmanagement.linhoang.model.dto.request.AccountRequestDto;
-import com.studentmanagement.linhoang.model.dto.response.AccountResponseDto;
-import com.studentmanagement.linhoang.model.entity.Account;
+import com.codegym.c11.model.dto.request.AccountRequestDto;
+import com.codegym.c11.model.entity.Account;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface IAccountService {

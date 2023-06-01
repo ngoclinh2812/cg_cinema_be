@@ -1,8 +1,7 @@
-package com.studentmanagement.linhoang.controller.test;
+package com.codegym.c11.controller;
 
-import com.studentmanagement.linhoang.model.dto.request.AccountRequestDto;
-import com.studentmanagement.linhoang.model.dto.response.AccountResponseDto;
-import com.studentmanagement.linhoang.service.IAccountService;
+import com.codegym.c11.model.dto.request.AccountRequestDto;
+import com.codegym.c11.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
