@@ -1,7 +1,9 @@
 package com.codegym.c11.controller;
 
 import com.codegym.c11.model.dto.request.AccountRequestDto;
+import com.codegym.c11.model.entity.Account;
 import com.codegym.c11.service.IAccountService;
+import com.codegym.c11.utils.AccountMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AccountController {
 
     @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
     private IAccountService accountService;
 
     @PostMapping("/login")
@@ -30,5 +35,17 @@ public class AccountController {
             e.printStackTrace();
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> signup(@RequestBody AccountRequestDto accountRequestDto) {
+        try {
+            Account newAccount = accountMapper.mapperFromRequestDtoToEntity(accountRequestDto);
+            accountService.saveNewAccount(newAccount);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

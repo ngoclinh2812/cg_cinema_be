@@ -98,6 +98,13 @@ public class AccountServiceImpl implements IAccountService {
         return null;
     }
 
+    @Override
+    public void saveNewAccount(Account newAccount) {
+        String hashedPassword = BCrypt.hashpw(newAccount.getPassword(), BCrypt.gensalt(10));
+        newAccount.setPassword(hashedPassword);
+        accountRepository.save(newAccount);
+    }
+
     public Account getAccountByUsername(String username) {
         return accountRepository.findByUsername(username).orElse(null);
     }
