@@ -1,7 +1,6 @@
-package com.studentmanagement.linhoang.security;
+package com.codegym.c11.security;
 
-
-import com.studentmanagement.linhoang.model.entity.Account;
+import com.codegym.c11.model.entity.Account;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

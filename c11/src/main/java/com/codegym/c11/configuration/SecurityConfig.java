@@ -1,8 +1,8 @@
-package com.studentmanagement.linhoang.configuration;
+package com.codegym.c11.configuration;
 
-import com.studentmanagement.linhoang.security.CustomAccessDeniedHandler;
-import com.studentmanagement.linhoang.security.JwtAuthenticationFilter;
-import com.studentmanagement.linhoang.security.RestAuthenticationEntryPoint;
+import com.codegym.c11.security.CustomAccessDeniedHandler;
+import com.codegym.c11.security.JwtAuthenticationFilter;
+import com.codegym.c11.security.RestAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

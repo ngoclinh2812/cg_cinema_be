@@ -1,7 +1,6 @@
-package com.studentmanagement.linhoang.security;
+package com.codegym.c11.security;
 
-
-import com.studentmanagement.linhoang.service.IAccountService;
+import com.codegym.c11.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,4 +1,4 @@
-package com.studentmanagement.linhoang.model.entity;
+package com.codegym.c11.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
