@@ -1,5 +1,4 @@
-package com.studentmanagement.linhoang.security;
-
+package com.codegym.c11.security;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

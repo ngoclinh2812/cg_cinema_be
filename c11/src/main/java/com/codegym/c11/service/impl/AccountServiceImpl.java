@@ -1,12 +1,11 @@
-package com.studentmanagement.linhoang.service.impl;
+package com.codegym.c11.service.impl;
 
-import com.studentmanagement.linhoang.model.dto.request.AccountRequestDto;
-import com.studentmanagement.linhoang.model.entity.Account;
-import com.studentmanagement.linhoang.model.entity.AccountRoles;
-import com.studentmanagement.linhoang.model.entity.UserPrinciple;
-import com.studentmanagement.linhoang.repository.AccountRepository;
-import com.studentmanagement.linhoang.security.JwtProvider;
-import com.studentmanagement.linhoang.service.IAccountService;
+import com.codegym.c11.model.dto.request.AccountRequestDto;
+import com.codegym.c11.model.entity.Account;
+import com.codegym.c11.model.entity.UserPrinciple;
+import com.codegym.c11.repository.AccountRepository;
+import com.codegym.c11.security.JwtProvider;
+import com.codegym.c11.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -97,6 +96,13 @@ public class AccountServiceImpl implements IAccountService {
             return jwt;
         }
         return null;
+    }
+
+    @Override
+    public void saveNewAccount(Account newAccount) {
+        String hashedPassword = BCrypt.hashpw(newAccount.getPassword(), BCrypt.gensalt(10));
+        newAccount.setPassword(hashedPassword);
+        accountRepository.save(newAccount);
     }
 
     public Account getAccountByUsername(String username) {

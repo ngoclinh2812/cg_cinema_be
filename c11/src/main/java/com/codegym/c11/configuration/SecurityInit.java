@@ -1,4 +1,4 @@
-package com.studentmanagement.linhoang.configuration;
+package com.codegym.c11.configuration;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

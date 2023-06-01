@@ -1,20 +1,20 @@
-package com.studentmanagement.linhoang.utils;
+package com.codegym.c11.utils;
 
-import com.studentmanagement.linhoang.model.dto.request.AccountRequestDto;
-import com.studentmanagement.linhoang.model.dto.response.AccountResponseDto;
-import com.studentmanagement.linhoang.model.entity.Account;
-import com.studentmanagement.linhoang.repository.AccountRepository;
+import com.codegym.c11.model.dto.request.AccountRequestDto;
+import com.codegym.c11.model.dto.response.AccountResponseDto;
+import com.codegym.c11.model.entity.Account;
+import com.codegym.c11.repository.AccountRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class AccountMapper {
 
     @Autowired
     private AccountRepository accountRepository;
 
-    public AccountResponseDto mapperAccount(Account account){
+    public AccountResponseDto mapperFromEntityToDto(Account account){
         AccountResponseDto accountDto = new AccountResponseDto();
         BeanUtils.copyProperties(account, accountDto);
         return accountDto;
@@ -26,9 +26,10 @@ public class AccountMapper {
         return accountEntity;
     }
 
-    public Account mapperRequestDto(AccountRequestDto accountDto) {
+    public Account mapperFromRequestDtoToEntity(AccountRequestDto accountDto) {
         Account accountEntity = new Account();
         BeanUtils.copyProperties(accountDto, accountEntity);
         return accountEntity;
     }
+
 }

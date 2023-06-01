@@ -1,5 +1,4 @@
-package com.studentmanagement.linhoang.model.entity;
-
+package com.codegym.c11.model.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

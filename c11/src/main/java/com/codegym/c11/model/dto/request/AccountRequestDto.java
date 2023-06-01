@@ -1,4 +1,4 @@
-package com.studentmanagement.linhoang.model.dto.request;
+package com.codegym.c11.model.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
