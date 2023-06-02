@@ -4,16 +4,13 @@ import com.codegym.c11.model.dto.request.AccountRequestDto;
 import com.codegym.c11.model.entity.Account;
 import com.codegym.c11.service.IAccountService;
 import com.codegym.c11.utils.AccountMapper;
+import com.codegym.c11.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @CrossOrigin
 @RequestMapping("/api/test/account")
 public class AccountController {
@@ -23,6 +20,9 @@ public class AccountController {
 
     @Autowired
     private IAccountService accountService;
+
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AccountRequestDto accountDto) {

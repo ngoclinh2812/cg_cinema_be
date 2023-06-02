@@ -11,14 +11,15 @@ CREATE TABLE `account` (
     `email` VARCHAR(255) NOT NULL,
     `username` VARCHAR(50) NOT NULL,
     `password` varchar(500) DEFAULT NULL,
+    `img` VARCHAR(255) DEFAULT "https://cdn-icons-png.flaticon.com/512/21/21104.png",
     PRIMARY KEY (`id`)
 );
 
-INSERT INTO `c11_cg_cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Ngoc Linh', 'Hoang', '0385281204', 'hngoclinh@gmail.com', 'linhoang', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
-INSERT INTO `c11_cg_cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Ngọc Phương Thảo', 'Lê', '0974608448', 'lengocphuongthao@gmail.com', 'thaole', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
-INSERT INTO `c11_cg_cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Thiên Phú', 'Trần', '0399726725', 'tranthienphu@gmail.com', 'phutran', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
-INSERT INTO `c11_cg_cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Nhật Khang', 'Đoàn', '0582202677', 'doannhatkhang@gmail.com', 'khangdoan', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
-INSERT INTO `c11_cg_cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Văn Chính', 'Phạm', '0962949846', 'chinh.pham@codegym.vn', 'chinhpham', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
+INSERT INTO `c11_cg_cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Ngoc Linh', 'Hoang', '0385281204', 'hngoclinh@gmail.com', 'linhoang', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-563642.jpg?w=360');
+INSERT INTO `c11_cg_cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Ngọc Phương Thảo', 'Lê', '0974608448', 'lengocphuongthao@gmail.com', 'thaole', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-804790.jpg');
+INSERT INTO `c11_cg_cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Thiên Phú', 'Trần', '0399726725', 'tranthienphu@gmail.com', 'phutran', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-563642.jpg?w=360');
+INSERT INTO `c11_cg_cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Nhật Khang', 'Đoàn', '0582202677', 'doannhatkhang@gmail.com', 'khangdoan', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-804790.jpg');
+INSERT INTO `c11_cg_cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Văn Chính', 'Phạm', '0962949846', 'chinh.pham@codegym.vn', 'chinhpham', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-804790.jpg');
 INSERT INTO `c11_cg_cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Thị Hồng Anh', 'Nguyễn', '0988717437', 'anh.nguyen@codegym.vn', 'anhnguyen', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
 INSERT INTO `c11_cg_cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Bá Minh Đạo', 'Nguyễn', '0908983906', 'dao.nguyen@codegym.vn', 'daonguyen', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
 INSERT INTO `c11_cg_cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Thùy Dương', 'Phạm', '0919983586', 'duong.pham@codegym.vn', 'duongpham', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
