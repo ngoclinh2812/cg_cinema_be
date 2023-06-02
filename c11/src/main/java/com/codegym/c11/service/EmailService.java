@@ -5,6 +5,7 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class EmailService {
     @Value("${app.sendgrid.templateId}")
     private String templateId;
 
+    @Value("${app.sendgrid.key}")
+    private String sendGridApiKey;
+
     @Autowired
     private SendGrid sendGrid;
 
@@ -38,7 +42,7 @@ public class EmailService {
 
             Request request = new Request();
             request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
+            request.setEndpoint("/v3/mail/send");
             request.setBody(mail.build());
             Response response = sendGrid.api(request);
             if (response != null) {
@@ -79,6 +83,29 @@ public class EmailService {
             System.out.println("Message succesfully sent to " + to);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void sendEmailTest(String to, String subject, String body) {
+        Email from = new Email("cg.cinema11@gmail.com");
+        Email toEmail = new Email(to);
+        Content content = new Content("text/plain", body);
+        Mail mail = new Mail(from, subject, toEmail, content);
+
+        SendGrid sg = new SendGrid(sendGridApiKey);
+        Request request = new Request();
+
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+
+            Response response = sg.api(request);
+            if (response != null) {
+                System.out.println("Response code from SendGrid: " + response.getHeaders());
+            }
+        } catch (Exception ex) {
+            System.out.println("Failed to send email: " + ex.getMessage());
         }
     }
 }

@@ -30,7 +30,8 @@ public class TestEmailSenderController {
             String subject = emailResponseDto.getSubject();
             String body = emailResponseDto.getBody();
 
-            emailService.sendEmailThroughFreeSmtp(to, subject, body);
+//            emailService.sendEmailThroughFreeSmtp(to, subject, body);
+            emailService.sendEmailTest(to, subject, body);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
