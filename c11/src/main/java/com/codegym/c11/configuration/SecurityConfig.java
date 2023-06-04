@@ -57,13 +57,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().ignoringAntMatchers("/**").disable();
         http.httpBasic().authenticationEntryPoint(restServicesEntryPoint());
-        http.authorizeRequests()
-                .antMatchers("/api/test/account/login", "/api/test/student/{username}").permitAll()
-                .antMatchers().hasRole("STUDENT")
-                .antMatchers("/url02").hasRole("LECTURER")
-                .antMatchers("/api/test/student/save").hasRole("AFFAIRS")
-                .antMatchers("/url03").hasRole("SUPERADMIN")
-                .anyRequest().authenticated();
+//        http.authorizeRequests()
+////                .antMatchers("/api/test/account/login", "/api/test/student/{username}").permitAll()
+////                .antMatchers().hasRole("STUDENT")
+////                .antMatchers("/url02").hasRole("LECTURER")
+////                .antMatchers("/api/test/student/save").hasRole("AFFAIRS")
+////                .antMatchers("/url03").hasRole("SUPERADMIN")
+////                .anyRequest().authenticated();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
         http.sessionManagement()
