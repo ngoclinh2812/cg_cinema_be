@@ -14,7 +14,7 @@ public class TestEmailSenderController {
     @Autowired
     private EmailService emailService;
 
-    @PostMapping("/sendMail/{email}")
+    @PostMapping("/sendGrid/{email}")
     public ResponseEntity<?> sendEmail(@PathVariable(value = "email", required = true) String email) {
         String emailResponse = emailService.sendEmailBySendGrid(email);
         if (emailResponse == "Mail was sent succesfully.") {
@@ -30,8 +30,8 @@ public class TestEmailSenderController {
             String subject = emailResponseDto.getSubject();
             String body = emailResponseDto.getBody();
 
-//            emailService.sendEmailThroughFreeSmtp(to, subject, body);
-            emailService.sendEmailTest(to, subject, body);
+            emailService.sendEmailThroughFreeSmtp(to, subject, body);
+//            emailService.sendEmailTest(to, subject, body);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
