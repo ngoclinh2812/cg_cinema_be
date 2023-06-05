@@ -90,10 +90,14 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public String login(AccountRequestDto accountDto) {
-        Account account = getAccountByUsername(accountDto.getUsername());
-        if (account != null && checkLogin(accountDto)) {
-            String jwt = jwtProvider.generateTokenLogin(account);
-            return jwt;
+//        Account account = getAccountByUsername(accountDto.getEmail());
+        Optional<Account> account = accountRepository.findByEmail(accountDto.getEmail());
+        if (account.isPresent()) {
+            boolean validateLoginUser = checkLogin(accountDto);
+            if(validateLoginUser) {
+                String jwt = jwtProvider.generateTokenLogin(account.get());
+                return jwt;
+            }
         }
         return null;
     }
@@ -145,11 +149,11 @@ public class AccountServiceImpl implements IAccountService {
         return accountRepository.findByUsername(username).orElse(null);
     }
 
-    public boolean checkLogin(AccountRequestDto account) {
-        Account searchAccount = getAccountByUsername(account.getUsername());
-        if (searchAccount != null) {
-            String password = account.getPassword();
-            String passwordDb = searchAccount.getPassword();
+    public boolean checkLogin(AccountRequestDto accountDto) {
+        Optional<Account> searchAccount = accountRepository.findByEmail(accountDto.getEmail());
+        if (searchAccount.isPresent()) {
+            String password = accountDto.getPassword();
+            String passwordDb = searchAccount.get().getPassword();
             return BCrypt.checkpw(password, passwordDb);
         }
         return false;
