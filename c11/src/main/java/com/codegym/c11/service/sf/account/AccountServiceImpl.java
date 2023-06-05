@@ -1,11 +1,12 @@
-package com.codegym.c11.service.impl;
+package com.codegym.c11.service.sf.account;
 
 import com.codegym.c11.model.dto.request.AccountRequestDto;
 import com.codegym.c11.model.entity.Account;
+import com.codegym.c11.model.entity.AccountRoles;
 import com.codegym.c11.model.entity.UserPrinciple;
 import com.codegym.c11.repository.AccountRepository;
 import com.codegym.c11.security.JwtProvider;
-import com.codegym.c11.service.IAccountService;
+import com.codegym.c11.service.sf.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -87,6 +89,27 @@ public class AccountServiceImpl implements IAccountService {
         // Update other properties as needed
     }
 
+    @Override
+    public String loginAsAdmin(AccountRequestDto accountDto) {
+        boolean isLogin= checkLogin(accountDto);
+
+        Account account = accountRepository.findByEmail(accountDto.getEmail()).get();
+        List<AccountRoles> roles = account.getRolesList();
+
+        boolean isRole  = false;
+        for (AccountRoles role :
+                roles ) {
+            if (role.getRole().getName().equals("ROLE_ADMIN")) {
+                isRole = true;
+                break;
+            }
+        }
+        if (isLogin && isRole){
+            String jwt = jwtProvider.generateTokenLogin(account);
+            return jwt;
+        }
+        return null;
+    }
 
     @Override
     public String login(AccountRequestDto accountDto) {

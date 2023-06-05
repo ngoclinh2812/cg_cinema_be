@@ -1,4 +1,4 @@
-package com.codegym.c11.service;
+package com.codegym.c11.service.sf;
 
 import com.sendgrid.Method;
 import com.sendgrid.Request;

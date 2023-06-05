@@ -1,8 +1,7 @@
-package com.codegym.c11.controller;
+package com.codegym.c11.controller.sf_controller;
 
 import com.codegym.c11.model.dto.response.MovieResponseDto;
-import com.codegym.c11.model.dto.response.TheaterResponseDto;
-import com.codegym.c11.service.movie.MovieService;
+import com.codegym.c11.service.sf.movie.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

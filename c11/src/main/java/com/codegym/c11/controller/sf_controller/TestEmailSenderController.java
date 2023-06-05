@@ -1,7 +1,7 @@
-package com.codegym.c11.controller;
+package com.codegym.c11.controller.sf_controller;
 
 import com.codegym.c11.model.dto.response.EmailResponseDto;
-import com.codegym.c11.service.EmailService;
+import com.codegym.c11.service.sf.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

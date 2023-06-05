@@ -1,4 +1,4 @@
-package com.codegym.c11.service;
+package com.codegym.c11.service.sf;
 
 import com.codegym.c11.model.dto.request.AccountRequestDto;
 import com.codegym.c11.model.entity.Account;
@@ -14,4 +14,6 @@ public interface IAccountService {
     void saveNewAccount(Account newAccount);
 
     boolean validateAccount(Account newAccount);
+
+    String loginAsAdmin(AccountRequestDto accountDto);
 }
