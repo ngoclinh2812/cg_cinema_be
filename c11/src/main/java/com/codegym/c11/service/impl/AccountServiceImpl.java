@@ -105,6 +105,42 @@ public class AccountServiceImpl implements IAccountService {
         accountRepository.save(newAccount);
     }
 
+    @Override
+    public boolean validateAccount(Account newAccount) {
+        boolean isUsername = validateUsername(newAccount.getUsername());
+        boolean isEmail = validateEmail(newAccount.getEmail());
+        boolean isPhone = validatePhone(newAccount.getPhone());
+
+        if (isUsername && isEmail && isPhone) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean validatePhone(String phone) {
+        Optional<Account> acc = accountRepository.findByPhoneNumber(phone);
+        if (acc.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean validateEmail(String email) {
+        Optional<Account> acc = accountRepository.findByEmail(email);
+        if (acc.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean validateUsername(String username) {
+        Optional<Account> acc = accountRepository.findByUsername(username);
+        if (acc.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
     public Account getAccountByUsername(String username) {
         return accountRepository.findByUsername(username).orElse(null);
     }

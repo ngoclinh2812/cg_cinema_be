@@ -41,8 +41,13 @@ public class AccountController {
     public ResponseEntity<?> signup(@RequestBody AccountRequestDto accountRequestDto) {
         try {
             Account newAccount = accountMapper.mapperFromRequestDtoToEntity(accountRequestDto);
-            accountService.saveNewAccount(newAccount);
-            return new ResponseEntity<>(HttpStatus.OK);
+            boolean validateAccount = accountService.validateAccount(newAccount);
+
+            if (validateAccount == true) {
+                accountService.saveNewAccount(newAccount);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

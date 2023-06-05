@@ -57,9 +57,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().ignoringAntMatchers("/**").disable();
         http.httpBasic().authenticationEntryPoint(restServicesEntryPoint());
+
         http.authorizeRequests()
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated();
+
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
         http.sessionManagement()

@@ -12,4 +12,6 @@ public interface IAccountService {
     String login(AccountRequestDto accountDto);
 
     void saveNewAccount(Account newAccount);
+
+    boolean validateAccount(Account newAccount);
 }
