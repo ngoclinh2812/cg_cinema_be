@@ -10,4 +10,6 @@ public interface IAccountService {
     void save(Account account);
 
     String login(AccountRequestDto accountDto);
+
+    void saveNewAccount(Account newAccount);
 }

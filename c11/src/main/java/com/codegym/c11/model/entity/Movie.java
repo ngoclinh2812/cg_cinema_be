@@ -19,7 +19,7 @@ public class Movie {
     @Column(name = "id")
     private Long id;
     private String name;
-    private String description;
+    private String decription;
     private String trailer;
     private String img;
 }
