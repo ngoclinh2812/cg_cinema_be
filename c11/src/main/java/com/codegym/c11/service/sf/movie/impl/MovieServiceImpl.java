@@ -1,11 +1,11 @@
-package com.codegym.c11.service.movie.impl;
+package com.codegym.c11.service.sf.movie.impl;
 
 
 
 import com.codegym.c11.model.dto.response.MovieResponseDto;
 import com.codegym.c11.model.entity.Movie;
 import com.codegym.c11.repository.MovieRepository;
-import com.codegym.c11.service.movie.MovieService;
+import com.codegym.c11.service.sf.movie.MovieService;
 import com.codegym.c11.utils.MovieMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

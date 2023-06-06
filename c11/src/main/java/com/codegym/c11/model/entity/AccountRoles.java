@@ -1,9 +1,17 @@
 package com.codegym.c11.model.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "account_role")
+@Getter
+@Setter
+@AllArgsConstructor
 public class AccountRoles {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

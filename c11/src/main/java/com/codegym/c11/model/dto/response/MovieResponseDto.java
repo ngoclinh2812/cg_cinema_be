@@ -6,7 +6,7 @@ import lombok.Data;
 public class MovieResponseDto {
     private Long id;
     private String name;
-    private String decription;
+    private String description;
     private String trailer;
     private String img;
 }

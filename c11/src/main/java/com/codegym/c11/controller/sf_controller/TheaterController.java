@@ -1,10 +1,10 @@
-package com.codegym.c11.controller;
+package com.codegym.c11.controller.sf_controller;
 
 
 import com.codegym.c11.model.dto.ITheaterDto;
 import com.codegym.c11.model.dto.response.PageResponseDto;
 import com.codegym.c11.model.dto.response.TheaterResponseDto;
-import com.codegym.c11.service.theater.impl.TheaterServiceImpl;
+import com.codegym.c11.service.sf.theater.impl.TheaterServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = "${app.cors.allowedOrigins}")
 @RequestMapping("/api/theaters")
 public class TheaterController {
     @Autowired

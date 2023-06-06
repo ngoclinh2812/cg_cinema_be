@@ -1,4 +1,4 @@
-package com.codegym.c11.service.theater;
+package com.codegym.c11.service.sf.theater;
 
 import com.codegym.c11.model.dto.ITheaterDto;
 import com.codegym.c11.model.dto.response.PageResponseDto;
