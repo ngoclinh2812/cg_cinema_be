@@ -1,11 +1,15 @@
 package com.codegym.c11.controller.sf_controller;
 
 import com.codegym.c11.model.dto.response.EmailResponseDto;
-import com.codegym.c11.service.sf.EmailService;
+import com.codegym.c11.service.sf.email.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.mail.MessagingException;
 
 @RestController
 @RequestMapping("/api/test/email")
@@ -37,5 +41,11 @@ public class TestEmailSenderController {
             e.printStackTrace();
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/send-email")
+    public ResponseEntity<?> triggerMail(@RequestBody EmailResponseDto emailDto) throws MessagingException {
+        emailService.sendSimpleEmail(emailDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

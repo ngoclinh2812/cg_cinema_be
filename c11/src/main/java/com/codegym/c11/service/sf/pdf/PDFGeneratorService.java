@@ -1,14 +1,16 @@
-package com.codegym.c11.service;
+package com.codegym.c11.service.sf.pdf;
 
 import com.codegym.c11.model.dto.request.TicketRequestDtoTest;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
+import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.CMYKColor;
+import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.IOException;
 
@@ -18,7 +20,7 @@ public class PDFGeneratorService {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         Document document = new Document(PageSize.A4);
-        PdfWriter.getInstance(document, outputStream);
+        PdfWriter writer = PdfWriter.getInstance(document, outputStream);
         document.open();
 
         // Set up fonts
@@ -40,6 +42,21 @@ public class PDFGeneratorService {
         addTicketInfoParagraph(document, "Screening Room", ticket.getScreeningRoom(), fontHeading, fontBody);
         addTicketInfoParagraph(document, "Showtime", ticket.getShowTime(), fontHeading, fontBody);
         addTicketInfoParagraph(document, "Seats", ticket.getSeats(), fontHeading, fontBody);
+
+        // Add cinema information with background color
+        Rectangle backgroundRect = new Rectangle(0, 0, PageSize.A4.getWidth(), 150);
+        backgroundRect.setBackgroundColor(new CMYKColor(1, 1, 0, 0)); // Set your desired background color
+        PdfContentByte canvas = writer.getDirectContentUnder();
+        canvas.rectangle(backgroundRect);
+
+        // Add cinema details
+        Font fontCinema = new Font(baseFont, 16, Font.BOLD, Color.WHITE);
+        Paragraph cinemaParagraph = new Paragraph("CG Cinema\n\n" +
+                "Tầng 4, 21K Nguyễn Văn Trỗi, Phường 10, Phú Nhuận, TP.HCM\n\n" +
+                "Email hỗ trợ: cg.cinema11@gmail.com\n\n" +
+                "Hotline: 1900 6969", fontCinema);
+        cinemaParagraph.setAlignment(Paragraph.ALIGN_CENTER);
+        document.add(cinemaParagraph);
 
         document.close();
 

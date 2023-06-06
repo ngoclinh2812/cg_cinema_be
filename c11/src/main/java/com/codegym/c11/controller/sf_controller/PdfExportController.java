@@ -1,21 +1,18 @@
 package com.codegym.c11.controller.sf_controller;
 
 import com.codegym.c11.model.dto.request.TicketRequestDtoTest;
-import com.codegym.c11.service.PDFGeneratorService;
+import com.codegym.c11.service.sf.pdf.PDFGeneratorService;
 import com.lowagie.text.DocumentException;
-import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
