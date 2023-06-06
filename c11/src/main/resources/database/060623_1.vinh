@@ -1,0 +1,235 @@
+drop database if exists cinema;
+create database cinema;
+use cinema;
+create table theater (
+id BIGINT auto_increment primary key,
+name varchar(255) NOT NULL,
+address varchar(255) NOT NULL,
+phone varchar(255) NOT NULL,
+img varchar(255)
+);
+create table movie (
+id BIGINT auto_increment primary key,
+name varchar(255) not null,
+description varchar(255) not null,
+trailer varchar(255) not null,
+img varchar(255) not null
+);
+create table room (
+id BIGINT auto_increment primary key,
+name varchar(255) not null
+);
+create table seat(
+id BIGINT auto_increment primary key,
+name varchar(55) not null,
+roomId BIGINT not null,
+FOREIGN KEY (roomId) REFERENCES room(id)
+);
+create table schedule (
+id BIGINT auto_increment primary key,
+show_time varchar(255) not null,
+show_date varchar(255) not null
+);
+create table theater_movie(
+id BIGINT auto_increment primary key,
+theaterId BIGINT not null,
+movieId BIGINT not null,
+FOREIGN KEY (theaterId) REFERENCES theater(id),
+FOREIGN KEY (movieId) REFERENCES movie(id)
+);
+create table schedule_movie (
+id BIGINT auto_increment primary key,
+movieId BIGINT not null,
+scheduleId BIGINT not null,
+FOREIGN KEY (movieId) REFERENCES movie(id),
+FOREIGN KEY (scheduleId) REFERENCES schedule(id)
+);
+create table room_movie (
+id BIGINT auto_increment primary key,
+movieId BIGINT not null,
+roomId BIGINT not null,
+FOREIGN KEY (movieId) REFERENCES movie(id),
+FOREIGN KEY (roomId) REFERENCES room(id)
+);
+DROP TABLE IF EXISTS `account`;
+CREATE TABLE `account` (
+	`id` BIGINT NOT NULL AUTO_INCREMENT,
+	`first_name` text,
+	`last_name` text,
+	`phone` varchar(45) DEFAULT NULL,
+    `email` VARCHAR(255) NOT NULL,
+    `username` VARCHAR(50) NOT NULL,
+    `password` varchar(500) DEFAULT NULL,
+    `img` VARCHAR(255) DEFAULT "https://cdn-icons-png.flaticon.com/512/21/21104.png",
+    PRIMARY KEY (`id`)
+);
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Ngoc Linh', 'Hoang', '0385281204', 'hngoclinh@gmail.com', 'linhoang', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-563642.jpg?w=360');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Ngọc Phương Thảo', 'Lê', '0974608448', 'lengocphuongthao@gmail.com', 'thaole', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-804790.jpg');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Thiên Phú', 'Trần', '0399726725', 'tranthienphu@gmail.com', 'phutran', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-563642.jpg?w=360');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Nhật Khang', 'Đoàn', '0582202677', 'doannhatkhang@gmail.com', 'khangdoan', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-804790.jpg');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Văn Chính', 'Phạm', '0962949846', 'chinh.pham@codegym.vn', 'chinhpham', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-804790.jpg');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Thị Hồng Anh', 'Nguyễn', '0988717437', 'anh.nguyen@codegym.vn', 'anhnguyen', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Bá Minh Đạo', 'Nguyễn', '0908983906', 'dao.nguyen@codegym.vn', 'daonguyen', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Thùy Dương', 'Phạm', '0919983586', 'duong.pham@codegym.vn', 'duongpham', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+INSERT INTO `role` VALUES (1,'ROLE_USER'),(2,'ROLE_ADMIN');
+DROP TABLE IF EXISTS `account_role`;
+CREATE TABLE `account_role` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `account_id` BIGINT NOT NULL,
+  `role_id` BIGINT NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `account_id` (`account_id`),
+  KEY `role_id` (`role_id`),
+  CONSTRAINT `account_roles_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`),
+  CONSTRAINT `account_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
+);
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('1', '1');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('2', '1');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('3', '1');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('4', '2');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('5', '1');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('6', '1');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('7', '1');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('8', '2');
+-- Insert data into 'theater' table
+INSERT INTO theater (name, address, phone, img)
+VALUES
+    ('Theater 1', 'Address 1', 'Phone 1', 'img1.jpg'),
+    ('Theater 2', 'Address 2', 'Phone 2', 'img2.jpg'),
+    ('Theater 3', 'Address 3', 'Phone 3', 'img3.jpg'),
+    ('Theater 4', 'Address 4', 'Phone 4', 'img4.jpg'),
+    ('Theater 5', 'Address 5', 'Phone 5', 'img5.jpg'),
+    ('Theater 6', 'Address 6', 'Phone 6', 'img6.jpg'),
+    ('Theater 7', 'Address 7', 'Phone 7', 'img7.jpg'),
+    ('Theater 8', 'Address 8', 'Phone 8', 'img8.jpg'),
+    ('Theater 9', 'Address 9', 'Phone 9', 'img9.jpg'),
+    ('Theater 10', 'Address 10', 'Phone 10', 'img10.jpg');
+-- Insert data into 'movie' table
+INSERT INTO movie (name, description, trailer, img)
+VALUES
+    ('Movie 1', 'Description 1', 'trailer1.mp4', 'img1.jpg'),
+    ('Movie 2', 'Description 2', 'trailer2.mp4', 'img2.jpg'),
+    ('Movie 3', 'Description 3', 'trailer3.mp4', 'img3.jpg'),
+    ('Movie 4', 'Description 4', 'trailer4.mp4', 'img4.jpg'),
+    ('Movie 5', 'Description 5', 'trailer5.mp4', 'img5.jpg'),
+    ('Movie 6', 'Description 6', 'trailer6.mp4', 'img6.jpg'),
+    ('Movie 7', 'Description 7', 'trailer7.mp4', 'img7.jpg'),
+    ('Movie 8', 'Description 8', 'trailer8.mp4', 'img8.jpg'),
+    ('Movie 9', 'Description 9', 'trailer9.mp4', 'img9.jpg'),
+    ('Movie 10', 'Description 10', 'trailer10.mp4', 'img10.jpg');
+-- Insert data into 'room' table
+INSERT INTO room (name)
+VALUES
+    ('Room 1'),
+    ('Room 2'),
+    ('Room 3'),
+    ('Room 4'),
+    ('Room 5'),
+    ('Room 6'),
+    ('Room 7'),
+    ('Room 8'),
+    ('Room 9'),
+    ('Room 10');
+-- Insert data into 'seat' table
+INSERT INTO seat (name, roomId)
+VALUES
+    ('Seat 1', 1),
+    ('Seat 2', 1),
+    ('Seat 3', 1),
+    ('Seat 4', 2),
+    ('Seat 5', 2),
+    ('Seat 6', 2),
+    ('Seat 7', 3),
+    ('Seat 8', 3),
+    ('Seat 9', 3),
+    ('Seat 10', 4);
+-- Insert data into 'schedule' table
+INSERT INTO schedule (show_time, show_date)
+VALUES
+    ('10:00 AM', '2023-06-05'),
+    ('12:00 PM', '2023-06-05'),
+    ('02:00 PM', '2023-06-05'),
+    ('04:00 PM', '2023-06-05'),
+    ('06:00 PM', '2023-06-05'),
+    ('08:00 PM', '2023-06-05'),
+    ('10:00 AM', '2023-06-06'),
+    ('12:00 PM', '2023-06-06'),
+    ('02:00 PM', '2023-06-06'),
+    ('04:00 PM', '2023-06-06');
+-- Insert data into 'theater_movie' table
+INSERT INTO theater_movie (theaterId, movieId)
+VALUES
+    (1, 1),
+    (1, 2),
+    (2, 3),
+    (2, 4),
+    (3, 5),
+    (3, 6),
+    (4, 7),
+    (4, 8),
+    (5, 9),
+    (5, 10);
+-- Insert data into 'schedule_movie' table
+INSERT INTO schedule_movie (movieId, scheduleId)
+VALUES
+    (1, 1),
+    (1, 2),
+    (2, 3),
+    (2, 4),
+    (3, 5),
+    (3, 6),
+    (4, 7),
+    (4, 8),
+    (5, 9),
+    (5, 10);
+-- Insert data into 'room_movie' table
+INSERT INTO room_movie (movieId, roomId)
+VALUES
+    (1, 1),
+    (1, 2),
+    (2, 3),
+    (2, 4),
+    (3, 5),
+    (3, 6),
+    (4, 7),
+    (4, 8),
+    (5, 9),
+    (5, 10);
+-- câu truy vấn
+select DISTINCT theater.id, theater.name, movie.name, schedule.show_time, schedule.show_date, room.name
+from movie
+inner join theater_movie on movie.id = theater_movie.id
+inner join theater on theater_movie.theaterId = theater.id
+INNER JOIN schedule_movie ON movie.id = schedule_movie.movieId
+INNER JOIN schedule ON schedule_movie.scheduleId = schedule.id
+INNER JOIN room_movie ON movie.id = room_movie.movieId
+INNER JOIN room ON room_movie.movieId = room.id;
+select DISTINCT theater.id, theater.name, movie.name, schedule.show_time, schedule.show_date, room.name
+from movie
+join theater_movie on movie.id = theater_movie.id
+join theater on theater_movie.theaterId = theater.id
+JOIN schedule_movie ON movie.id = schedule_movie.movieId
+RIGHT JOIN schedule ON schedule_movie.scheduleId = schedule.id
+JOIN room_movie ON movie.id = room_movie.movieId
+JOIN room ON room_movie.movieId = room.id
+WHERE theater.id = 3;
+select DISTINCT theater.id, theater.name, movie.name,  room.name
+from movie
+JOIN room_movie ON movie.id = room_movie.movieId
+JOIN room ON room_movie.movieId = room.id
+inner join theater_movie on movie.id = theater_movie.id
+inner join theater on theater_movie.theaterId = theater.id;
+select * from theater;
+SELECT name, address, phone
+FROM theater;
+SELECT t.name AS theater_name, m.name AS movie_name
+FROM theater t
+INNER JOIN movie m ON t.id = m.theaterId;
+select * from theater t join theater_movie tm on t.id = tm.theaterId  where t.name="Rạp chiếu phim A";
+select * from movie m join theater_movie tm on m.id = tm.theaterId where tm.theaterId = 1;
