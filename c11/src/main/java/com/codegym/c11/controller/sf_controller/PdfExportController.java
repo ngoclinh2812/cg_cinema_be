@@ -1,13 +1,18 @@
 package com.codegym.c11.controller.sf_controller;
 
+import com.codegym.c11.model.dto.request.TicketRequestDtoTest;
 import com.codegym.c11.service.PDFGeneratorService;
 import com.lowagie.text.DocumentException;
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
@@ -23,19 +28,20 @@ public class PdfExportController {
     @Autowired
     private PDFGeneratorService pdfGeneratorService;
 
-    @GetMapping
-    public ResponseEntity<?> generatePDF(HttpServletResponse response) throws DocumentException, IOException {
-        response.setContentType("application/pdf");
+    @PostMapping("/generate")
+    public ResponseEntity<byte[]> generatePDF(@RequestBody TicketRequestDtoTest ticketDto) throws DocumentException, IOException {
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
-        String currendDateTime = dateFormatter.format(new Date());
+        String currentDateTime = dateFormatter.format(new Date());
 
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=pdf_" + currendDateTime + ".pdf";
+        String filename = "pdf_" + currentDateTime + ".pdf";
 
-        response.setHeader(headerKey, headerValue);
+        byte[] pdfContent = pdfGeneratorService.export(ticketDto);
 
-        this.pdfGeneratorService.export(response);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData(filename, filename);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(pdfContent, headers, HttpStatus.OK);
     }
 }
