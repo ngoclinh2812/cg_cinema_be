@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController(value = "sfAccountController")
-@CrossOrigin(origins = "${app.cors.allowedOrigins}")
 @RequestMapping("/api/sf/account")
 public class AccountController {
 
