@@ -36,6 +36,12 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.sendgrid/sendgrid-java
 	implementation 'com.sendgrid:sendgrid-java:4.9.3'
 
+	// https://mvnrepository.com/artifact/org.springframework/spring-aop
+	implementation 'org.springframework:spring-aop'
+
+	// https://mvnrepository.com/artifact/org.aspectj/aspectjweaver
+	runtimeOnly 'org.aspectj:aspectjweaver'
+
 
 }
 
