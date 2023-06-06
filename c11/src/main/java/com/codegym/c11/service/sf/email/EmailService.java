@@ -39,7 +39,7 @@ public class EmailService {
 
     public void sendSimpleEmail(EmailResponseDto emailResponseDto) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("hnlinhtkd@gmail.com");
+        message.setFrom("cg.cinema11@gmail.com");
         message.setTo(emailResponseDto.getTo());
         message.setText(emailResponseDto.getBody());
         message.setSubject(emailResponseDto.getSubject());
