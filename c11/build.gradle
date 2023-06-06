@@ -42,6 +42,12 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.aspectj/aspectjweaver
 	runtimeOnly 'org.aspectj:aspectjweaver'
 
+//	// https://mvnrepository.com/artifact/com.github.librepdf/openpdf
+//	implementation 'com.github.librepdf:openpdf'
+
+	// https://mvnrepository.com/artifact/com.lowagie/itext
+	implementation 'com.lowagie:itext:2.1.7'
+
 
 }
 

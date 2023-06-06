@@ -1,5 +1,6 @@
-package com.codegym.c11.service.sf;
+package com.codegym.c11.service.sf.email;
 
+import com.codegym.c11.model.dto.response.EmailResponseDto;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -34,6 +35,16 @@ public class EmailService {
     @Autowired
     public EmailService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
+    }
+
+    public void sendSimpleEmail(EmailResponseDto emailResponseDto) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("cg.cinema11@gmail.com");
+        message.setTo(emailResponseDto.getTo());
+        message.setText(emailResponseDto.getBody());
+        message.setSubject(emailResponseDto.getSubject());
+        javaMailSender.send(message);
+        System.out.println("Mail Sent...");
     }
 
     public String sendEmailBySendGrid(String email) {

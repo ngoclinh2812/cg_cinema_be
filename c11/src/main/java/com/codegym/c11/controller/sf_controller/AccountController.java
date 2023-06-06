@@ -4,14 +4,13 @@ import com.codegym.c11.model.dto.request.AccountRequestDto;
 import com.codegym.c11.model.entity.Account;
 import com.codegym.c11.service.sf.IAccountService;
 import com.codegym.c11.utils.AccountMapper;
-import com.codegym.c11.service.sf.EmailService;
+import com.codegym.c11.service.sf.email.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController(value = "sfAccountController")
-@CrossOrigin(origins = "${app.cors.allowedOrigins}")
 @RequestMapping("/api/sf/account")
 public class AccountController {
 
