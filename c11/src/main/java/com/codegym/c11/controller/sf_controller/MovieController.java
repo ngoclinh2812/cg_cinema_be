@@ -8,18 +8,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "${app.cors.allowedOrigins}")
 @RequestMapping("/api/show")
 public class MovieController {
     @Autowired
-    private final MovieService movieService;
+    private MovieService movieService;
 
     public MovieController(MovieService movieService){
         this.movieService = movieService;
