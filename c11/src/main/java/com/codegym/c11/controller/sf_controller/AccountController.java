@@ -1,21 +1,18 @@
-package com.codegym.c11.controller;
+package com.codegym.c11.controller.sf_controller;
 
 import com.codegym.c11.model.dto.request.AccountRequestDto;
 import com.codegym.c11.model.entity.Account;
-import com.codegym.c11.service.IAccountService;
+import com.codegym.c11.service.sf.IAccountService;
 import com.codegym.c11.utils.AccountMapper;
+import com.codegym.c11.service.sf.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
-@CrossOrigin
-@RequestMapping("/api/test/account")
+@RestController(value = "sfAccountController")
+@CrossOrigin(origins = "${app.cors.allowedOrigins}")
+@RequestMapping("/api/sf/account")
 public class AccountController {
 
     @Autowired
@@ -23,6 +20,9 @@ public class AccountController {
 
     @Autowired
     private IAccountService accountService;
+
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AccountRequestDto accountDto) {
@@ -41,8 +41,13 @@ public class AccountController {
     public ResponseEntity<?> signup(@RequestBody AccountRequestDto accountRequestDto) {
         try {
             Account newAccount = accountMapper.mapperFromRequestDtoToEntity(accountRequestDto);
-            accountService.saveNewAccount(newAccount);
-            return new ResponseEntity<>(HttpStatus.OK);
+            boolean validateAccount = accountService.validateAccount(newAccount);
+
+            if (validateAccount == true) {
+                accountService.saveNewAccount(newAccount);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

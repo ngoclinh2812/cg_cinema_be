@@ -1,0 +1,56 @@
+DROP DATABASE IF EXISTS cinema;
+CREATE DATABASE cinema;
+USE cinema;
+
+DROP TABLE IF EXISTS `account`;
+CREATE TABLE `account` (
+	`id` BIGINT NOT NULL AUTO_INCREMENT,
+	`first_name` text,
+	`last_name` text,
+	`phone` varchar(45) DEFAULT NULL,
+    `email` VARCHAR(255) NOT NULL,
+    `username` VARCHAR(50) NOT NULL,
+    `password` varchar(500) DEFAULT NULL,
+    `img` VARCHAR(255) DEFAULT "https://cdn-icons-png.flaticon.com/512/21/21104.png",
+    PRIMARY KEY (`id`)
+);
+
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Ngoc Linh', 'Hoang', '0385281204', 'hngoclinh@gmail.com', 'linhoang', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-563642.jpg?w=360');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Ngọc Phương Thảo', 'Lê', '0974608448', 'lengocphuongthao@gmail.com', 'thaole', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-804790.jpg');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Thiên Phú', 'Trần', '0399726725', 'tranthienphu@gmail.com', 'phutran', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-563642.jpg?w=360');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Nhật Khang', 'Đoàn', '0582202677', 'doannhatkhang@gmail.com', 'khangdoan', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-804790.jpg');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Văn Chính', 'Phạm', '0962949846', 'chinh.pham@codegym.vn', 'chinhpham', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-804790.jpg');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Thị Hồng Anh', 'Nguyễn', '0988717437', 'anh.nguyen@codegym.vn', 'anhnguyen', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Bá Minh Đạo', 'Nguyễn', '0908983906', 'dao.nguyen@codegym.vn', 'daonguyen', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Thùy Dương', 'Phạm', '0919983586', 'duong.pham@codegym.vn', 'duongpham', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
+
+
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+INSERT INTO `role` VALUES (1,'ROLE_USER'),(2,'ROLE_ADMIN');
+
+DROP TABLE IF EXISTS `account_role`;
+CREATE TABLE `account_role` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `account_id` BIGINT NOT NULL,
+  `role_id` BIGINT NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `account_id` (`account_id`),
+  KEY `role_id` (`role_id`),
+  CONSTRAINT `account_roles_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`),
+  CONSTRAINT `account_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
+);
+
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('1', '1');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('2', '1');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('3', '1');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('4', '2');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('5', '1');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('6', '1');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('7', '1');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('8', '2');

@@ -1,10 +1,10 @@
-package com.codegym.c11.service.theater.impl;
+package com.codegym.c11.service.sf.theater.impl;
 
 import com.codegym.c11.model.dto.ITheaterDto;
 import com.codegym.c11.model.dto.response.TheaterResponseDto;
 import com.codegym.c11.model.entity.Theater;
 import com.codegym.c11.repository.TheaterRepository;
-import com.codegym.c11.service.theater.TheaterService;
+import com.codegym.c11.service.sf.theater.TheaterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
