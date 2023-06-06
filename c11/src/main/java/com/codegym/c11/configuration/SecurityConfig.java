@@ -57,7 +57,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().ignoringAntMatchers("/**").disable();
         http.httpBasic().authenticationEntryPoint(restServicesEntryPoint());
-
         http.authorizeRequests()
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated();
@@ -68,5 +67,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.cors().configurationSource(corsConfigurationSource()).disable();
     }
-
 }

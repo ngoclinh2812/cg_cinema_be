@@ -16,13 +16,13 @@ import java.util.List;
 @CrossOrigin(origins = "${app.cors.allowedOrigins}")
 @RequestMapping("/api/show")
 public class MovieController {
+
     @Autowired
     private MovieService movieService;
 
     public MovieController(MovieService movieService){
         this.movieService = movieService;
     }
-
 
     @GetMapping("")
     private ResponseEntity<List<MovieResponseDto>> fillAll(){

@@ -20,8 +20,12 @@ import java.util.List;
 
 @Service
 public class MovieServiceImpl implements MovieService {
-    private final MovieRepository movieRepository;
-    private final MovieMapper movieMapper;
+
+    @Autowired
+    private MovieRepository movieRepository;
+
+    @Autowired
+    private MovieMapper movieMapper;
 
     public MovieServiceImpl(MovieRepository movieRepository, MovieMapper movieMapper){
         this.movieRepository = movieRepository;
