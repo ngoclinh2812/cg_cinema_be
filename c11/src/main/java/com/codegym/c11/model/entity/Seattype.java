@@ -9,21 +9,19 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "movie")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Movie {
+@Table(name = "seattype")
+public class Seattype {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-    private String name;
-    private String description;
-    private String trailer;
-    private String img;
 
-    @OneToMany(mappedBy = "movie")
-    private List<ScheduleMovie> scheduleMovieList;
+    @OneToMany(mappedBy = "seattype", cascade = CascadeType.PERSIST)
+    private List<Seat> seatList;
+
+    private Double price;
 }

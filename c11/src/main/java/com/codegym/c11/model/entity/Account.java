@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 @Entity
 @Table(name = "account")
@@ -39,5 +40,8 @@ public class Account {
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<AccountRoles> rolesList;
+
+    @OneToMany(mappedBy = "account")
+    private List<Ticket> ticketList;
 
 }

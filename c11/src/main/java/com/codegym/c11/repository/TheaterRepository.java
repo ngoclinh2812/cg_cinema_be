@@ -14,24 +14,11 @@ public interface TheaterRepository extends JpaRepository<Theater, Long> {
     @Query("SELECT th from Theater th")
     List<Theater> listTheaters();
 
-    @Query(value = "select DISTINCT t.id as theaterId, t.name as theaterName, m.name as movieName, s.show_time as scheduleShow_time," +
-            " s.show_date as scheduleShow_date, r.name as roomName" +
-            " from movie m" +
-            " inner join theater_movie tm on tm.id = m.id" +
-            " inner join theater t on t.id = tm.theaterId" +
-            " INNER JOIN schedule_movie sm ON  sm.movieId = m.id" +
-            " INNER JOIN schedule s ON s.id = sm.scheduleId" +
-            " INNER JOIN room_movie rm ON rm.movieId = m.id " +
-            " INNER JOIN room r ON  r.id = rm.movieId" +
-            " WHERE t.id =:id", nativeQuery = true,
-            countQuery = "select count(*) " +
-                    "  from movie m" +
-                    "  inner join theater_movie tm on tm.id = m.id" +
-                    "  inner join theater t on t.id = tm.theaterId" +
-                    "  INNER JOIN schedule_movie sm ON  sm.movieId = m.id" +
-                    "  INNER JOIN schedule s ON s.id = sm.scheduleId" +
-                    "  INNER JOIN room_movie rm ON rm.movieId = m.id" +
-                    "  INNER JOIN room r ON  r.id = rm.movieId" +
-                    " WHERE t.id =:id")
+    @Query(value = "SELECT sm.id as theaterId, m.name AS movieName, s.show_time AS scheduleShow_time, s.show_date AS scheduleShow_date, r.name AS roomName, t.name AS theaterName\n" +
+            "FROM schedule_movie sm\n" +
+            "JOIN movie m ON sm.movieId = m.id\n" +
+            "JOIN schedule s ON sm.scheduleId = s.id\n" +
+            "JOIN room r ON sm.room_id = r.id\n" +
+            "JOIN theater t ON r.theater_id = t.id;", nativeQuery = true)
     List<ITheaterDto> findTheaterById(@Param("id") Long id);
 }

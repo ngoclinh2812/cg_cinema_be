@@ -8,22 +8,26 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
+@Table(name = "seat")
 @Entity
-@Table(name = "movie")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Movie {
+public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
     private String name;
-    private String description;
-    private String trailer;
-    private String img;
 
-    @OneToMany(mappedBy = "movie")
-    private List<ScheduleMovie> scheduleMovieList;
+    @ManyToOne
+    @JoinColumn(name = "roomId")
+    private Room room;
+
+    @ManyToOne
+    @JoinColumn(name = "seat_type")
+    private Seattype seattype;
+
+    @OneToMany(mappedBy = "seat")
+    private List<Ticket> ticketList;
 }
