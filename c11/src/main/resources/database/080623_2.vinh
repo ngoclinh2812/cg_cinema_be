@@ -10,15 +10,6 @@ phone varchar(255) NOT NULL,
 img varchar(255)
 );
 
--- drop table theater_movie;
--- create table theater_movie(
--- id BIGINT auto_increment primary key,
--- theaterId BIGINT not null,
--- movieId BIGINT not null,
--- FOREIGN KEY (theaterId) REFERENCES theater(id),
--- FOREIGN KEY (movieId) REFERENCES movie(id)
--- );
-
 create table movie (
 id BIGINT auto_increment primary key,
 name varchar(255) not null,

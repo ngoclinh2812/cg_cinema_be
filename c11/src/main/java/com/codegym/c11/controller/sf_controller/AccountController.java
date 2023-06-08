@@ -1,6 +1,7 @@
 package com.codegym.c11.controller.sf_controller;
 
 import com.codegym.c11.model.dto.request.AccountRequestDto;
+import com.codegym.c11.model.dto.response.EmailResponseDto;
 import com.codegym.c11.model.entity.Account;
 import com.codegym.c11.service.sf.IAccountService;
 import com.codegym.c11.utils.AccountMapper;
@@ -43,6 +44,10 @@ public class AccountController {
             boolean validateAccount = accountService.validateAccount(newAccount);
 
             if (validateAccount == true) {
+
+                EmailResponseDto email = new EmailResponseDto(newAccount.getEmail(), "Sign up confirmed", "Account " + newAccount.getUsername() + " has been created succesfully.");
+                emailService.sendSimpleEmail(email);
+
                 accountService.saveNewAccount(newAccount);
                 return new ResponseEntity<>(HttpStatus.OK);
             }

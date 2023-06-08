@@ -23,7 +23,7 @@ public class TheaterController {
     private TheaterServiceImpl theaterService;
 
     @GetMapping("")
-    private ResponseEntity<PageResponseDto<TheaterResponseDto>> getTheaters(@PageableDefault(value = 4)Pageable pageable){
+    private ResponseEntity<PageResponseDto<TheaterResponseDto>> getTheaters(@PageableDefault(value = 4) Pageable pageable){
         return new ResponseEntity<>(theaterService.findAll(pageable), HttpStatus.OK);
     }
 
