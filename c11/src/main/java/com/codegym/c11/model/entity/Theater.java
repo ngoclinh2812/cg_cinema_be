@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "theater")
@@ -22,4 +23,7 @@ public class Theater {
     private String address;
     private String phone;
     private String img;
+
+    @OneToMany(mappedBy = "TheaterId")
+    private List<Room> roomList;
 }
