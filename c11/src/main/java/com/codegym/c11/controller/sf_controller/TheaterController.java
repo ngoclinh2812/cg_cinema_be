@@ -1,12 +1,11 @@
 package com.codegym.c11.controller.sf_controller;
 
 
-import com.codegym.c11.model.dto.ITheaterDto;
+import com.codegym.c11.model.dto.response.ITheaterDto;
 import com.codegym.c11.model.dto.response.PageResponseDto;
 import com.codegym.c11.model.dto.response.TheaterResponseDto;
 import com.codegym.c11.service.sf.theater.impl.TheaterServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
