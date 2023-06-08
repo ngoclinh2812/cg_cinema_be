@@ -1,0 +1,203 @@
+drop database if exists cinema;
+create database cinema;
+use cinema;
+
+create table theater (
+id BIGINT auto_increment primary key,
+name varchar(255) NOT NULL,
+address varchar(255) NOT NULL,
+phone varchar(255) NOT NULL,
+img varchar(255)
+);
+
+-- drop table theater_movie;
+-- create table theater_movie(
+-- id BIGINT auto_increment primary key,
+-- theaterId BIGINT not null,
+-- movieId BIGINT not null,
+-- FOREIGN KEY (theaterId) REFERENCES theater(id),
+-- FOREIGN KEY (movieId) REFERENCES movie(id)
+-- );
+
+create table movie (
+id BIGINT auto_increment primary key,
+name varchar(255) not null,
+description varchar(255) not null,
+trailer varchar(255) not null,
+img varchar(255) not null
+);
+
+create table schedule (
+id BIGINT auto_increment primary key,
+show_time datetime not null,
+show_date datetime not null
+);
+
+drop table if exists room;
+create table room (
+id BIGINT auto_increment primary key,
+name varchar(255) not null,
+theater_id BIGINT NOT NULL,
+FOREIGN KEY (theater_id) references theater(id)
+);
+
+drop table if exists schedule_movie;
+create table schedule_movie (
+id BIGINT auto_increment primary key,
+movieId BIGINT not null,
+scheduleId BIGINT not null,
+room_id bigint not null,
+FOREIGN KEY (movieId) REFERENCES movie(id),
+FOREIGN KEY (scheduleId) REFERENCES schedule(id),
+foreign key (room_id) references room(id)
+);
+
+drop table if exists seattype;
+CREATE table seattype(
+id BIGINT auto_increment primary key,
+typeseat ENUM ('normal','vip'),
+price double not null
+);
+
+drop table if exists seat;
+create table seat(
+id BIGINT auto_increment primary key,
+name varchar(55) not null,
+roomId BIGINT not null,
+seat_type bigint,
+status enum("0", "1"),
+FOREIGN KEY (roomId) REFERENCES room(id),
+FOREIGN KEY (seat_type) REFERENCES seattype(id)
+);
+
+DROP TABLE IF EXISTS `account`;
+CREATE TABLE `account` (
+	`id` BIGINT NOT NULL AUTO_INCREMENT,
+	`first_name` text,
+	`last_name` text,
+	`phone` varchar(45) DEFAULT NULL,
+    `email` VARCHAR(255) NOT NULL,
+    `username` VARCHAR(50) NOT NULL,
+    `password` varchar(500) DEFAULT NULL,
+    `img` VARCHAR(255) DEFAULT "https://cdn-icons-png.flaticon.com/512/21/21104.png",
+    PRIMARY KEY (`id`)
+);
+
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+DROP TABLE IF EXISTS `account_role`;
+CREATE TABLE `account_role` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `account_id` BIGINT NOT NULL,
+  `role_id` BIGINT NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `account_id` (`account_id`),
+  KEY `role_id` (`role_id`),
+  CONSTRAINT `account_roles_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`),
+  CONSTRAINT `account_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
+);
+
+drop table ticket;
+create table ticket(
+id BIGINT auto_increment primary key,
+user_id bigint not null,
+schedule_movie_id bigint not null,
+seat_1 bigint not null,
+foreign key (user_id) references account(id),
+foreign key (schedule_movie_id) references schedule_movie(id),
+foreign key (seat_1) references seat(id)
+);
+
+
+-- Chèn dữ liệu vào bảng "theater"
+INSERT INTO theater (name, address, phone, img) VALUES
+('Theater 1', '123 Main Street', '111-111-1111', 'theater1.jpg'),
+('Theater 2', '456 Broadway', '222-222-2222', 'theater2.jpg'),
+('Theater 3', '789 Elm Avenue', '333-333-3333', 'theater3.jpg'),
+('Theater 4', '321 Oak Drive', '444-444-4444', 'theater4.jpg'),
+('Theater 5', '555 Pine Road', '555-555-5555', 'theater5.jpg');
+
+-- Chèn dữ liệu vào bảng "movie"
+INSERT INTO movie (name, description, trailer, img) VALUES
+('Movie 1', 'Description of Movie 1', 'trailer1.mp4', 'movie1.jpg'),
+('Movie 2', 'Description of Movie 2', 'trailer2.mp4', 'movie2.jpg'),
+('Movie 3', 'Description of Movie 3', 'trailer3.mp4', 'movie3.jpg'),
+('Movie 4', 'Description of Movie 4', 'trailer4.mp4', 'movie4.jpg'),
+('Movie 5', 'Description of Movie 5', 'trailer5.mp4', 'movie5.jpg');
+
+-- Chèn dữ liệu vào bảng "schedule"
+INSERT INTO schedule (show_time, show_date) VALUES
+('2023-06-08 19:00:00', '2023-06-08'),
+('2023-06-08 21:00:00', '2023-06-08'),
+('2023-06-09 18:30:00', '2023-06-09'),
+('2023-06-09 20:30:00', '2023-06-09'),
+('2023-06-10 19:30:00', '2023-06-10');
+
+-- Chèn dữ liệu vào bảng "room"
+INSERT INTO room (name, theater_id) VALUES
+('Room 1', 1),
+('Room 2', 2),
+('Room 3', 3),
+('Room 4', 4),
+('Room 5', 5);
+
+-- Chèn dữ liệu vào bảng "schedule_movie"
+INSERT INTO schedule_movie (movieId, scheduleId, room_id) VALUES
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 3),
+(4, 4, 4),
+(5, 5, 5);
+
+-- Chèn dữ liệu vào bảng "seattype"
+INSERT INTO seattype (typeseat, price) VALUES
+('normal', 10.0),
+('vip', 15.0),
+('normal', 12.0),
+('vip', 18.0),
+('normal', 9.0);
+
+-- Chèn dữ liệu vào bảng "seat"
+INSERT INTO seat (name, roomId, seat_type, status) VALUES
+('Seat 1', 1, 1, '0'),
+('Seat 2', 1, 1, '0'),
+('Seat 3', 1, 2, '0'),
+('Seat 4', 2, 2, '0'),
+('Seat 5', 2, 1, '0');
+
+-- Chèn dữ liệu vào bảng "account"
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Ngoc Linh', 'Hoang', '0385281204', 'hngoclinh@gmail.com', 'linhoang', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-563642.jpg?w=360');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Ngọc Phương Thảo', 'Lê', '0974608448', 'lengocphuongthao@gmail.com', 'thaole', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-804790.jpg');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Thiên Phú', 'Trần', '0399726725', 'tranthienphu@gmail.com', 'phutran', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-563642.jpg?w=360');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Nhật Khang', 'Đoàn', '0582202677', 'doannhatkhang@gmail.com', 'khangdoan', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-804790.jpg');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Văn Chính', 'Phạm', '0962949846', 'chinh.pham@codegym.vn', 'chinhpham', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-804790.jpg');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Thị Hồng Anh', 'Nguyễn', '0988717437', 'anh.nguyen@codegym.vn', 'anhnguyen', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Bá Minh Đạo', 'Nguyễn', '0908983906', 'dao.nguyen@codegym.vn', 'daonguyen', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
+INSERT INTO `cinema`.`account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Thùy Dương', 'Phạm', '0919983586', 'duong.pham@codegym.vn', 'duongpham', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
+
+INSERT INTO `role` VALUES (1,'ROLE_USER'),(2,'ROLE_ADMIN');
+
+
+-- Chèn dữ liệu vào bảng "role"
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('1', '1');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('2', '1');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('3', '1');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('4', '2');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('5', '1');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('6', '1');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('7', '1');
+INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('8', '2');
+
+
+-- Chèn dữ liệu vào bảng "ticket"
+INSERT INTO ticket (user_id, schedule_movie_id, seat_1) VALUES
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 3),
+(4, 4, 4),
+(5, 5, 5);

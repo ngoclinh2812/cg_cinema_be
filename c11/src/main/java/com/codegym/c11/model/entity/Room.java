@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Table(name = "room")
 @Entity
@@ -19,4 +20,15 @@ public class Room {
     @Column(name = "id")
     private Long id;
     private String name;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "theater_id")
+    private Theater TheaterId;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST)
+    private List<Seat> seatList;
+
+    @OneToMany(mappedBy = "room")
+    private List<ScheduleMovie> scheduleMovieList;
+
 }

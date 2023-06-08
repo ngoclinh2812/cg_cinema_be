@@ -8,6 +8,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,10 +21,6 @@ public class ScheduleMovie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "movieId", insertable = false, updatable = false)
-    private long movieId;
-    @Column(name = "scheduleId", insertable = false, updatable = false)
-    private long scheduleId;
 
     @ManyToOne
     @JoinColumn(nullable = false,name = "movieId")
@@ -34,5 +31,14 @@ public class ScheduleMovie {
     @JoinColumn(nullable = false,name = "scheduleId")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Schedule schedule;
+
+    @ManyToOne
+    @JoinColumn(nullable = false,name = "room_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Room room;
+
+    @OneToMany(mappedBy = "scheduleMovie")
+    private List<Ticket> ticketList;
+
 
 }
