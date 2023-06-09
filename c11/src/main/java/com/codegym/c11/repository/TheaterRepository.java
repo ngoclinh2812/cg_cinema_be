@@ -1,6 +1,6 @@
 package com.codegym.c11.repository;
 
-import com.codegym.c11.model.dto.ITheaterDto;
+import com.codegym.c11.model.dto.response.ITheaterDto;
 import com.codegym.c11.model.entity.Theater;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

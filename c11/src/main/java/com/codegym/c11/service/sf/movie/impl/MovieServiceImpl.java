@@ -3,6 +3,7 @@ package com.codegym.c11.service.sf.movie.impl;
 
 
 import com.codegym.c11.model.dto.response.MovieResponseDto;
+import com.codegym.c11.model.dto.response.PageResponseDto;
 import com.codegym.c11.model.entity.Movie;
 import com.codegym.c11.repository.MovieRepository;
 import com.codegym.c11.service.sf.movie.MovieService;
@@ -31,21 +32,18 @@ public class MovieServiceImpl implements MovieService {
         this.movieRepository = movieRepository;
         this.movieMapper = movieMapper;
     }
-    public Page<MovieResponseDto> findAll (Pageable pageable){
-        Page<Movie> films = (Page<Movie>) movieRepository.findAllFilm(pageable);
-        Page<MovieResponseDto> dtos = movieMapper.entitiesDto(films);
-        return dtos;
-    }
-    @Autowired
-    public List<MovieResponseDto> findAllMovies (){
-        List<Movie> movies = movieRepository.findAll();
-        List<MovieResponseDto> movieDtos = new ArrayList<>();
-        for (Movie movie : movies) {
-            MovieResponseDto movieDto = new MovieResponseDto();
-            BeanUtils.copyProperties(movie, movieDto);
-            movieDtos.add(movieDto);
-        }
-        return movieDtos;
+
+    @Override
+    public PageResponseDto<MovieResponseDto> findAllMovies(Pageable pageable){
+        PageResponseDto<MovieResponseDto> responseDto = new PageResponseDto<>();
+        Page<Movie> movies = movieRepository.findAll(pageable);
+        responseDto.setTotalRecord(movies.getTotalElements());
+        responseDto.setTotalPage(movies.getTotalPages());
+        responseDto.setPage(movies.getNumber());
+        responseDto.setSize(movies.getSize());
+        responseDto.setDataList(movieMapper.toListDto(movies.getContent()));
+        return responseDto;
+
     }
     @Override
     public MovieResponseDto findById(Long id) {
@@ -65,16 +63,17 @@ public class MovieServiceImpl implements MovieService {
         movieRepository.deleteAllById(id);
     }
 
+
     @Override
-    public Page<MovieResponseDto> findByName(String name, Pageable pageable) {
-        Page<Movie> moviePage = movieRepository.findByName(name, pageable);
-        List<MovieResponseDto> movieDtos = new ArrayList<>();
-        for (Movie movie : moviePage.getContent()) {
-            MovieResponseDto movieDto = new MovieResponseDto();
-            BeanUtils.copyProperties(movie, movieDto);
-            movieDtos.add(movieDto);
-        }
-        return new PageImpl<>(movieDtos, pageable, moviePage.getTotalElements());
+    public PageResponseDto<MovieResponseDto> findByName(String name, Pageable pageable) {
+        PageResponseDto<MovieResponseDto> responseDtos = new PageResponseDto<>();
+        Page<Movie> movies = movieRepository.findAll(pageable);
+        responseDtos.setTotalRecord(movies.getTotalElements());
+        responseDtos.setTotalPage(movies.getTotalPages());
+        responseDtos.setPage(movies.getNumber());
+        responseDtos.setSize(movies.getSize());
+        responseDtos.setDataList(movieMapper.toListDto(movies.getContent()));
+        return responseDtos;
     }
 
 
