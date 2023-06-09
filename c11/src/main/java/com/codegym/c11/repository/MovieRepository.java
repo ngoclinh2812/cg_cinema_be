@@ -13,8 +13,11 @@ import java.util.List;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Long> {
     @Query(value = "select m from Movie m ")
-    List<Movie> findAllFilm(Pageable pageable);
+    Page<Movie> findAllFilm(Pageable pageable);
+
     @Query(value = "select * from movie where name like %:name% ORDER BY name ASC", nativeQuery = true)
     Page<Movie> findByName(@Param("name") String name, Pageable pageable);
+
+
     void deleteAllById(Long id);
 }
