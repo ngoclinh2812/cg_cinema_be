@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface TheaterService {
     List<TheaterResponseDto> getTheaters();
-    List<ITheaterDto> getMovieInTheater(String id);
+    List<ITheaterDto> getMovieInTheater(Long id);
     PageResponseDto<?> findAll(Pageable pageable);
 }

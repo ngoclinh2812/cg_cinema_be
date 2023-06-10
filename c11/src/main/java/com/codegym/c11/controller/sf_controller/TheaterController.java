@@ -6,7 +6,6 @@ import com.codegym.c11.model.dto.response.PageResponseDto;
 import com.codegym.c11.model.dto.response.TheaterResponseDto;
 import com.codegym.c11.service.sf.theater.impl.TheaterServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -28,8 +27,8 @@ public class TheaterController {
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<List<ITheaterDto>> getTheaterShowingMovies(@PathVariable String id){
-        List<ITheaterDto> theaterDtoList = theaterService.getMovieInTheater(id) ;
+    private ResponseEntity<List<ITheaterDto>> getTheaterShowingMovies(@PathVariable("id") String id){
+        List<ITheaterDto> theaterDtoList = theaterService.getMovieInTheater(Long.getLong(id)) ;
         if (theaterDtoList.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

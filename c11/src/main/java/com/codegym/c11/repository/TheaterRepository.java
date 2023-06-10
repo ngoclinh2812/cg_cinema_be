@@ -19,6 +19,7 @@ public interface TheaterRepository extends JpaRepository<Theater, Long> {
             "JOIN movie m ON sm.movieId = m.id\n" +
             "JOIN schedule s ON sm.scheduleId = s.id\n" +
             "JOIN room r ON sm.room_id = r.id\n" +
-            "JOIN theater t ON r.theater_id = t.id;", nativeQuery = true)
-    List<ITheaterDto> findTheaterById(@Param("id") Long id);
+            "JOIN theater t ON r.theater_id = t.id " +
+            "where t.id = ?1;", nativeQuery = true)
+    List<ITheaterDto> findTheaterById(Long id);
 }
