@@ -29,7 +29,6 @@ public class MovieController {
         return new ResponseEntity<>(movieService.findAllMovies(), HttpStatus.OK);
     }
 
-
     @GetMapping("/list")
     public ResponseEntity<Page<MovieResponseDto>> findByName(@RequestParam(value = "name", defaultValue = "") String name,
                                                              @PageableDefault(size = 3) Pageable pageable){
@@ -39,5 +38,4 @@ public class MovieController {
         }
         return new ResponseEntity<>(movieDtos, HttpStatus.OK);
     }
-
 }

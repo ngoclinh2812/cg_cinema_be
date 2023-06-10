@@ -36,7 +36,7 @@ public class MovieServiceImpl implements MovieService {
         Page<MovieResponseDto> dtos = movieMapper.entitiesDto(films);
         return dtos;
     }
-    @Autowired
+    @Override
     public List<MovieResponseDto> findAllMovies (){
         List<Movie> movies = movieRepository.findAll();
         List<MovieResponseDto> movieDtos = new ArrayList<>();
