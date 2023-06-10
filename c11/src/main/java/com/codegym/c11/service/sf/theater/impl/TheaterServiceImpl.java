@@ -40,14 +40,8 @@ public class TheaterServiceImpl implements TheaterService {
 
     @Override
     public List<ITheaterDto> getMovieInTheater(Long id) {
-        List<ITheaterDto> iTheaterDtoList;
-        try {
-            iTheaterDtoList = theaterRepository.findTheaterById(id);
-            return iTheaterDtoList;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-            return null;
+        List<ITheaterDto> iTheaterDtoList = theaterRepository.findTheaterById(id);
+        return iTheaterDtoList;
     }
 
     @Override
