@@ -7,6 +7,5 @@ import lombok.Data;
 public class ScheduleDto {
 
     private Long id;
-    private String showTime;
-    private String showDate;
+
 }

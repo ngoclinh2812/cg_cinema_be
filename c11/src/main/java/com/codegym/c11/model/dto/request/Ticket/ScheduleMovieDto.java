@@ -12,10 +12,5 @@ public class ScheduleMovieDto {
 
     private Long id;
 
-    private MovieRequestDto movie;
-
-    private ScheduleDto schedule;
-
-    private RoomRequestDto room;
 
 }

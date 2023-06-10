@@ -5,5 +5,4 @@ import lombok.Data;
 @Data
 public class RoomRequestDto {
     private Long id;
-    private String name;
 }

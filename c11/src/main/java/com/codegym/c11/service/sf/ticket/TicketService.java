@@ -8,6 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public interface TicketService {
 
 
-    Ticket save(Ticket ticketEntity);
+    Ticket save(TicketRequestDto ticketEntity);
 
 }

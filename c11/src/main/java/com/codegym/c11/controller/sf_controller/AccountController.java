@@ -40,7 +40,7 @@ public class AccountController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody AccountRequestDto accountRequestDto) {
         try {
-            Account newAccount = accountMapper.mapperFromRequestDtoToEntity(accountRequestDto);
+            Account newAccount = accountMapper.convertFromRequestDtoToEntity(accountRequestDto);
             boolean validateAccount = accountService.validateAccount(newAccount);
 
             if (validateAccount == true) {

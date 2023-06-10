@@ -1,5 +1,6 @@
 package com.codegym.c11.configuration;
 
+import com.codegym.c11.enums.ERole;
 import com.codegym.c11.security.CustomAccessDeniedHandler;
 import com.codegym.c11.security.JwtAuthenticationFilter;
 import com.codegym.c11.security.RestAuthenticationEntryPoint;
@@ -58,7 +59,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().ignoringAntMatchers("/**").disable();
         http.httpBasic().authenticationEntryPoint(restServicesEntryPoint());
         http.authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/api/theaters/**").permitAll()
+                .antMatchers("/api/sf/account/**").permitAll()
+                .antMatchers("/api/bo/account").permitAll()
+                .antMatchers("/api/ticket/**").permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
