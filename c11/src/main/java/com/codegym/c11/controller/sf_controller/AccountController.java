@@ -44,9 +44,7 @@ public class AccountController {
             boolean validateAccount = accountService.validateAccount(newAccount);
 
             if (validateAccount == true) {
-
-                EmailResponseDto email = new EmailResponseDto(newAccount.getEmail(), "Sign up confirmed", "Account " + newAccount.getUsername() + " has been created succesfully.");
-                emailService.sendSimpleEmail(email);
+                emailService.sendAccountConfirmEmail(newAccount.getEmail());
 
                 accountService.saveNewAccount(newAccount);
                 return new ResponseEntity<>(HttpStatus.OK);

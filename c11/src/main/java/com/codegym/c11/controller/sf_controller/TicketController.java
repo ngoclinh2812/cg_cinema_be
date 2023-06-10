@@ -31,9 +31,7 @@ public class TicketController {
     @PostMapping()
     public ResponseEntity<?> createTicket(@RequestBody TicketRequestDto ticketDto) {
         Ticket savedTicket = ticketService.save(ticketDto);
-
-
-//        emailService.sendSimpleEmail();
+        emailService.sendTicketConfirmedEmail(savedTicket);
         return ResponseEntity.ok(savedTicket);
     }
 

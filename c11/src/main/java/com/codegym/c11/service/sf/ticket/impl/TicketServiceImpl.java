@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.NoSuchElementException;
 
 @Service
@@ -36,6 +37,7 @@ public class TicketServiceImpl implements TicketService {
     private ISeatService seatService;
 
     @Override
+    @Transactional
     public Ticket save(TicketRequestDto ticketDto) {
 
         Ticket ticket = new Ticket();

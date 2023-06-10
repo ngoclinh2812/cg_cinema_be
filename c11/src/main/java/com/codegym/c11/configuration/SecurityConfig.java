@@ -60,8 +60,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic().authenticationEntryPoint(restServicesEntryPoint());
         http.authorizeRequests()
                 .antMatchers("/api/theaters/**").permitAll()
+                .antMatchers("/api/movies/**").permitAll()
                 .antMatchers("/api/sf/account/**").permitAll()
-                .antMatchers("/api/bo/account").permitAll()
+//                .antMatchers("/api/bo/account").permitAll()
                 .antMatchers("/api/ticket/**").permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
