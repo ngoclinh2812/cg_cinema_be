@@ -1,4 +1,4 @@
-package com.codegym.c11.model.dto;
+package com.codegym.c11.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

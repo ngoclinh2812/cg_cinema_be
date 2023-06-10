@@ -1,6 +1,6 @@
 package com.codegym.c11.service.sf.theater.impl;
 
-import com.codegym.c11.model.dto.ITheaterDto;
+import com.codegym.c11.model.dto.response.ITheaterDto;
 import com.codegym.c11.model.dto.response.PageResponseDto;
 import com.codegym.c11.model.dto.response.TheaterResponseDto;
 import com.codegym.c11.model.entity.Theater;
