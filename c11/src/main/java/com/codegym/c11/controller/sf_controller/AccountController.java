@@ -1,6 +1,7 @@
 package com.codegym.c11.controller.sf_controller;
 
 import com.codegym.c11.model.dto.request.AccountRequestDto;
+import com.codegym.c11.model.dto.response.EmailResponseDto;
 import com.codegym.c11.model.entity.Account;
 import com.codegym.c11.service.sf.IAccountService;
 import com.codegym.c11.utils.AccountMapper;
@@ -39,10 +40,12 @@ public class AccountController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody AccountRequestDto accountRequestDto) {
         try {
-            Account newAccount = accountMapper.mapperFromRequestDtoToEntity(accountRequestDto);
+            Account newAccount = accountMapper.convertFromRequestDtoToEntity(accountRequestDto);
             boolean validateAccount = accountService.validateAccount(newAccount);
 
             if (validateAccount == true) {
+                emailService.sendAccountConfirmEmail(newAccount.getEmail());
+
                 accountService.saveNewAccount(newAccount);
                 return new ResponseEntity<>(HttpStatus.OK);
             }

@@ -112,8 +112,16 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
+    public Account findByUsername(String username) {
+        Optional<Account> searchAccount = accountRepository.findByUsername(username);
+        if (searchAccount.isPresent()) {
+            return searchAccount.get();
+        }
+        return null;
+    }
+
+    @Override
     public String login(AccountRequestDto accountDto) {
-//        Account account = getAccountByUsername(accountDto.getEmail());
         Optional<Account> account = accountRepository.findByEmail(accountDto.getEmail());
         if (account.isPresent()) {
             boolean validateLoginUser = checkLogin(accountDto);
