@@ -10,7 +10,7 @@ public interface ITheaterDto {
     Long getTheaterId();
     String getTheaterName();
     String getMovieName();
-    LocalDateTime getScheduleShow_time();
-    LocalDateTime getScheduleShow_date();
+    LocalDateTime getShowTime();
+    LocalDateTime getShowDate();
     String getRoomName();
 }
