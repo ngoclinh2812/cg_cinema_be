@@ -13,14 +13,14 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "seattype")
-public class Seattype {
+@Table(name = "seat_type")
+public class SeatType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "seattype", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "seatType", cascade = CascadeType.PERSIST)
     private List<Seat> seatList;
 
     private Double price;

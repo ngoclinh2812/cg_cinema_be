@@ -5,10 +5,6 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MoiveRequestDto {
+public class MovieRequestDto {
     private Long id;
-    private String name;
-    private String address;
-    private String phone;
-    private String img;
 }

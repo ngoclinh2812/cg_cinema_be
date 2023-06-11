@@ -1,6 +1,8 @@
 package com.codegym.c11.service.sf.email;
 
 import com.codegym.c11.model.dto.response.EmailResponseDto;
+import com.codegym.c11.model.entity.Account;
+import com.codegym.c11.model.entity.Ticket;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -37,12 +39,45 @@ public class EmailService {
         this.javaMailSender = javaMailSender;
     }
 
-    public void sendSimpleEmail(EmailResponseDto emailResponseDto) {
+    public void sendTicketConfirmedEmail(Ticket ticket) {
         SimpleMailMessage message = new SimpleMailMessage();
+
         message.setFrom("cg.cinema11@gmail.com");
-        message.setTo(emailResponseDto.getTo());
-        message.setText(emailResponseDto.getBody());
-        message.setSubject(emailResponseDto.getSubject());
+        message.setTo(ticket.getAccount().getEmail());
+
+        String bodyText = createBodyText(ticket);
+        message.setText(bodyText);
+
+        String subjectText = ("Giao dịch thành công");
+        message.setSubject(subjectText);
+
+        javaMailSender.send(message);
+        System.out.println("Mail Sent...");
+    }
+
+
+    private String createBodyText(Ticket ticket) {
+        return "Thông tin vé:\t"
+                + "Tên phim: " + ticket.getScheduleMovie().getMovie()
+                + "Rạp: "
+                + "Phòng chiếu: " + ticket.getScheduleMovie()
+                + "Suất chiếu: "
+                + "Ghế: " + ticket.getSeat()
+                + "Tổng cộng: "
+                + "Cảm ơn quý khách đã lựa chọn CG Cinema!";
+    }
+
+    public void sendAccountConfirmEmail(String email) {
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom("cg.cinema11@gmail.com");
+
+        message.setTo(email);
+
+        message.setText("Chúc mừng quý khách đã trở thành hội viên của CG Cinema.");
+
+        message.setSubject("Email xác nhận đăng ký");
+
         javaMailSender.send(message);
         System.out.println("Mail Sent...");
     }

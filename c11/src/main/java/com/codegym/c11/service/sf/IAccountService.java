@@ -4,6 +4,8 @@ import com.codegym.c11.model.dto.request.AccountRequestDto;
 import com.codegym.c11.model.entity.Account;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Optional;
+
 public interface IAccountService {
     UserDetails loadUserByUsername(String username);
 
@@ -16,4 +18,6 @@ public interface IAccountService {
     boolean validateAccount(Account newAccount);
 
     String loginAsAdmin(AccountRequestDto accountDto);
+
+    Account findByUsername(String username);
 }

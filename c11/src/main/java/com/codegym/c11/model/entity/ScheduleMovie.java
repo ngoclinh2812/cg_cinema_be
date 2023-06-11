@@ -22,17 +22,17 @@ public class ScheduleMovie {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(nullable = false,name = "movieId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "movie_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Movie movie;
 
-    @ManyToOne
-    @JoinColumn(nullable = false,name = "scheduleId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false, name = "schedule_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Schedule schedule;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false,name = "room_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Room room;

@@ -1,8 +1,10 @@
-package com.codegym.c11.aspect;
+package com.codegym.c11.aspect.sf;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -10,14 +12,16 @@ import java.util.Arrays;
 @Aspect
 @Slf4j
 @Component
-public class GeneralAspect {
+public class TheaterAspect {
+
+    private Logger logger = LoggerFactory.getLogger(TheaterAspect.class);
 
     @Before("execution(public * com.codegym.c11.service.sf.theater.TheaterService.*(..))")
     public void before(JoinPoint joinPoint) {
         String className = joinPoint.getTarget().getClass().getSimpleName();
         String method = joinPoint.getSignature().getName();
         String args = Arrays.toString(joinPoint.getArgs());
-        System.out.println(String.format("[CMS] Before method: %s.%s%s", className, method, args));
+        logger.info(String.format("[CMS] Before method: %s.%s%s", className, method, args));
     }
 
     @AfterReturning(pointcut = "execution(public * com.codegym.c11.service.sf.theater.TheaterService.*(..))", returning = "result")
@@ -25,8 +29,7 @@ public class GeneralAspect {
         String className = joinPoint.getTarget().getClass().getSimpleName();
         String method = joinPoint.getSignature().getName();
         String args = Arrays.toString(joinPoint.getArgs());
-        System.out.println(String.format("[CMS] Return succesfully: %s.%s%s", className, method, args));
-        System.out.println("[CMS] Result: " + result);
+        logger.info(String.format("[CMS] Return succesfully: %s.%s%s", className, method, args), result);
     }
 
     @AfterThrowing(pointcut = "execution(public * com.codegym.c11.service.sf.theater.TheaterService.*(..))", throwing = "e")
@@ -34,7 +37,7 @@ public class GeneralAspect {
         String className = joinPoint.getTarget().getClass().getSimpleName();
         String method = joinPoint.getSignature().getName();
         String args = Arrays.toString(joinPoint.getArgs());
-        System.out.println(String.format("[CMS] Exception occurred: %s.%s%s: %s", className, method, args, e.getMessage()));
+        logger.info(String.format("[CMS] Exception occurred: %s.%s%s: %s", className, method, args, e.getMessage()));
     }
 
 }
