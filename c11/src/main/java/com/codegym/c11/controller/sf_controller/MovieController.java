@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:3001")
 @RequestMapping("/api/movies")
 public class MovieController {
 
@@ -25,6 +25,8 @@ public class MovieController {
     private ResponseEntity<PageResponseDto<MovieResponseDto>> fillAll(@PageableDefault(value = 10)Pageable pageable){
         return new ResponseEntity<>(movieService.findAllMovies(pageable), HttpStatus.OK);
     }
+
+
 
     @GetMapping("/search")
     public ResponseEntity<PageResponseDto<MovieResponseDto>> findByName(
