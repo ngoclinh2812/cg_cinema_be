@@ -1,6 +1,6 @@
 package com.codegym.c11.security;
 
-import com.codegym.c11.service.IAccountService;
+import com.codegym.c11.service.sf.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,10 +35,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                request.setAttribute("username", username);
             }
         } catch (Exception e) {
             logger.error("Can NOT set user authentication -> Message: {}", e);
         }
+
         filterChain.doFilter(request, response);
     }
 
