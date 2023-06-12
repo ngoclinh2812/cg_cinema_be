@@ -1,8 +1,7 @@
-package com.codegym.c11.model.dto.request.Ticket;
+package com.codegym.c11.model.dto.Ticket.request;
 
 import com.codegym.c11.model.dto.request.MovieRequestDto;
 import com.codegym.c11.model.dto.request.RoomRequestDto;
-import com.codegym.c11.model.entity.Schedule;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -11,6 +10,8 @@ import lombok.Data;
 public class ScheduleMovieDto {
 
     private Long id;
-
+    private MovieRequestDto movie;
+    private RoomRequestDto room;
+    private ScheduleDto schedule;
 
 }

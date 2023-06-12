@@ -1,6 +1,6 @@
 package com.codegym.c11.service.sf.ticket.impl;
 
-import com.codegym.c11.model.dto.request.Ticket.TicketRequestDto;
+import com.codegym.c11.model.dto.Ticket.request.TicketRequestDto;
 import com.codegym.c11.model.entity.Account;
 import com.codegym.c11.model.entity.ScheduleMovie;
 import com.codegym.c11.model.entity.Seat;
@@ -14,7 +14,6 @@ import com.codegym.c11.utils.AccountMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.NoSuchElementException;
 
@@ -42,11 +41,14 @@ public class TicketServiceImpl implements TicketService {
 
         Ticket ticket = new Ticket();
 
-        ScheduleMovie scheduleMovie = iScheduleMovie.getScheduleMovieById(ticketDto.getScheduleMovie().getId());
-        Account account = accountService.findByUsername(ticketDto.getAccount().getUsername());
+        Account account = accountService.findById(ticketDto.getAccount().getId());
+        ScheduleMovie scheduleMovie = iScheduleMovie.getScheduleMovieByMovieRoomSchedule(
+                                            ticketDto.getScheduleMovie().getMovie().getId(),
+                                            ticketDto.getScheduleMovie().getSchedule().getId(),
+                                            ticketDto.getScheduleMovie().getRoom().getId());
         Seat seat = seatService.getSeatById(ticketDto.getSeat().getId());
 
-        if (account != null && account != null && seat != null) {
+        if (account != null && scheduleMovie != null && seat != null) {
             ticket.setId(ticketDto.getId());
             ticket.setScheduleMovie(scheduleMovie);
             ticket.setAccount(account);

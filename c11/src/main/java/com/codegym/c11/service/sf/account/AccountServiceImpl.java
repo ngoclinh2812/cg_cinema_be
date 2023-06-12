@@ -121,6 +121,11 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
+    public Account findById(Long id) {
+        return accountRepository.findById(id).orElseThrow();
+    }
+
+    @Override
     public String login(AccountRequestDto accountDto) {
         Optional<Account> account = accountRepository.findByEmail(accountDto.getEmail());
         if (account.isPresent()) {
