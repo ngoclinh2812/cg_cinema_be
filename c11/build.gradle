@@ -48,6 +48,11 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.lowagie/itext
 	implementation 'com.lowagie:itext:2.1.7'
 
+	// Dung de config cac profilers
+	implementation 'org.springframework.boot:spring-boot-configuration-processor'
+
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
 
 }
 
