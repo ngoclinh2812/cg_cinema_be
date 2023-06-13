@@ -22,12 +22,12 @@ public class TheaterController {
     private TheaterServiceImpl theaterService;
 
     @GetMapping("")
-    private ResponseEntity<PageResponseDto<TheaterResponseDto>> getTheaters(@PageableDefault(value = 4)Pageable pageable){
+    private ResponseEntity<PageResponseDto<TheaterResponseDto>> getTheaters(@PageableDefault(value = 4) Pageable pageable){
         return new ResponseEntity<>(theaterService.findAll(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<List<ITheaterDto>> getTheaterShowingMovies(@PathVariable String id){
+    private ResponseEntity<List<ITheaterDto>> getTheaterShowingMovies(@PathVariable("id") Long id){
         List<ITheaterDto> theaterDtoList = theaterService.getMovieInTheater(id) ;
         if (theaterDtoList.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -15,7 +15,10 @@ id BIGINT auto_increment primary key,
 name varchar(255) not null,
 description varchar(255) not null,
 trailer varchar(255) not null,
-img varchar(255) not null
+img varchar(255) not null,
+genre varchar(255) not null,
+duration varchar(255) not null ,
+rating varchar(255) not null
 );
 
 create table schedule (
@@ -42,6 +45,8 @@ FOREIGN KEY (movieId) REFERENCES movie(id),
 FOREIGN KEY (scheduleId) REFERENCES schedule(id),
 foreign key (room_id) references room(id)
 );
+alter table schedule_movie rename column movieId TO movie_id;
+alter table schedule_movie rename column scheduleId TO schedule_id;
 
 drop table if exists seattype;
 CREATE table seattype(
@@ -49,6 +54,9 @@ id BIGINT auto_increment primary key,
 typeseat ENUM ('normal','vip'),
 price double not null
 );
+ALTER TABLE seattype RENAME seat_type;
+alter table seat_type rename column typeseat TO type_seat;
+
 
 drop table if exists seat;
 create table seat(
@@ -58,8 +66,10 @@ roomId BIGINT not null,
 seat_type bigint,
 status enum("0", "1"),
 FOREIGN KEY (roomId) REFERENCES room(id),
-FOREIGN KEY (seat_type) REFERENCES seattype(id)
+FOREIGN KEY (seat_type) REFERENCES seat_type(id)
 );
+alter table seat rename column roomId TO room_id;
+
 
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
@@ -93,7 +103,7 @@ CREATE TABLE `account_role` (
   CONSTRAINT `account_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
 );
 
-drop table ticket;
+drop table if exists ticket;
 create table ticket(
 id BIGINT auto_increment primary key,
 user_id bigint not null,
@@ -103,6 +113,8 @@ foreign key (user_id) references account(id),
 foreign key (schedule_movie_id) references schedule_movie(id),
 foreign key (seat_1) references seat(id)
 );
+alter table ticket rename column seat_1 TO seat;
+
 
 
 -- Chèn dữ liệu vào bảng "theater"
@@ -114,12 +126,14 @@ INSERT INTO theater (name, address, phone, img) VALUES
 ('Theater 5', '555 Pine Road', '555-555-5555', 'theater5.jpg');
 
 -- Chèn dữ liệu vào bảng "movie"
-INSERT INTO movie (name, description, trailer, img) VALUES
-('Movie 1', 'Description of Movie 1', 'trailer1.mp4', 'movie1.jpg'),
-('Movie 2', 'Description of Movie 2', 'trailer2.mp4', 'movie2.jpg'),
-('Movie 3', 'Description of Movie 3', 'trailer3.mp4', 'movie3.jpg'),
-('Movie 4', 'Description of Movie 4', 'trailer4.mp4', 'movie4.jpg'),
-('Movie 5', 'Description of Movie 5', 'trailer5.mp4', 'movie5.jpg');
+INSERT INTO movie  (name, description, trailer, img, genre, duration, rating)
+VALUES
+('Avengers: Endgame', 'The Avengers must assemble once again to defeat Thanos.', 'https://www.youtube.com/watch?v=TcMBFSGVi1c', 'https://images.squarespace-cdn.com/content/v1/556489d4e4b064c1f32b6812/1452895990247-CD7HVX82NTS3U3SSKZCB/the_avengers.jpg', 'Action, Adventure, Sci-Fi', '3h 1m','8.0'),
+('Spider-Man: No Way Home', 'Peter Parker''s identity is revealed, and he seeks help from Doctor Strange.', 'https://www.youtube.com/watch?v=g4Hbz2jLxvQ', 'https://clipartix.com/wp-content/uploads/2019/02/spiderman-clipart-2019-15.jpg', 'Action, Adventure, Fantasy', '2h 28m','7.8'),
+('Black Widow', 'Natasha Romanoff confronts her past and deals with dangerous conspiracies.', 'https://www.youtube.com/watch?v=Fp9pNPdNwjI', 'https://cdn.galaxycine.vn/media/2023/6/1/300x450_1685607263025.jpg', 'Action, Adventure, Thriller', '2h 14m','6.8'),
+('Shang-Chi and the Legend of the Ten Rings', 'Shang-Chi must confront the past he thought he left behind when he is drawn into the web of the mysterious Ten Rings organization.', 'https://www.youtube.com/watch?v=8YjFbMbfXaQ', 'shangchi.jpg', 'Action, Adventure, Fantasy', '2h 12m','7.8'),
+('Eternals', 'A group of immortal beings known as the Eternals come out of hiding to protect humanity from their evil counterparts, the Deviants.', 'https://www.youtube.com/watch?v=0WVDKZJkGlY', 'eternals.jpg', 'Action, Adventure, Drama', '2h 37m',''),
+('Wonder Woman 1984', 'Diana Prince faces off against Maxwell Lord and the Cheetah as she navigates life in the 1980s.', 'https://www.youtube.com/watch?v=sfM7_JLk-84', 'wonderwoman.jpg', 'Action, Adventure, Fantasy', '2h 31m','7.0');
 
 -- Chèn dữ liệu vào bảng "schedule"
 INSERT INTO schedule (show_time, show_date) VALUES
@@ -138,7 +152,7 @@ INSERT INTO room (name, theater_id) VALUES
 ('Room 5', 5);
 
 -- Chèn dữ liệu vào bảng "schedule_movie"
-INSERT INTO schedule_movie (movieId, scheduleId, room_id) VALUES
+INSERT INTO schedule_movie (movie_id, schedule_id, room_id) VALUES
 (1, 1, 1),
 (2, 2, 2),
 (3, 3, 3),
@@ -146,7 +160,7 @@ INSERT INTO schedule_movie (movieId, scheduleId, room_id) VALUES
 (5, 5, 5);
 
 -- Chèn dữ liệu vào bảng "seattype"
-INSERT INTO seattype (typeseat, price) VALUES
+INSERT INTO seat_type (type_seat, price) VALUES
 ('normal', 10.0),
 ('vip', 15.0),
 ('normal', 12.0),
@@ -154,7 +168,7 @@ INSERT INTO seattype (typeseat, price) VALUES
 ('normal', 9.0);
 
 -- Chèn dữ liệu vào bảng "seat"
-INSERT INTO seat (name, roomId, seat_type, status) VALUES
+INSERT INTO seat (name, room_id, seat_type, status) VALUES
 ('Seat 1', 1, 1, '0'),
 ('Seat 2', 1, 1, '0'),
 ('Seat 3', 1, 2, '0'),
@@ -186,9 +200,16 @@ INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('8', '2');
 
 
 -- Chèn dữ liệu vào bảng "ticket"
-INSERT INTO ticket (user_id, schedule_movie_id, seat_1) VALUES
+INSERT INTO ticket (user_id, schedule_movie_id, seat) VALUES
 (1, 1, 1),
 (2, 2, 2),
 (3, 3, 3),
 (4, 4, 4),
 (5, 5, 5);
+
+SELECT sm.id as theaterId, m.name AS movieName, s.show_time AS scheduleShow_time, s.show_date AS scheduleShow_date, r.name AS roomName, t.name AS theaterName
+            FROM schedule_movie sm
+            JOIN movie m ON sm.movieId = m.id
+            JOIN schedule s ON sm.scheduleId = s.id
+            JOIN room r ON sm.room_id = r.id
+            JOIN theater t ON r.theater_id = t.id where t.id = 1;

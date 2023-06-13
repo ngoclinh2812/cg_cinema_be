@@ -14,19 +14,8 @@ public class AccountMapper {
     @Autowired
     private AccountRepository accountRepository;
 
-    public AccountResponseDto mapperFromEntityToDto(Account account){
-        AccountResponseDto accountDto = new AccountResponseDto();
-        BeanUtils.copyProperties(account, accountDto);
-        return accountDto;
-    }
 
-    public Account mapperResponseDto(AccountResponseDto accountDto) {
-        Account accountEntity = new Account();
-        BeanUtils.copyProperties(accountDto, accountEntity);
-        return accountEntity;
-    }
-
-    public Account mapperFromRequestDtoToEntity(AccountRequestDto accountDto) {
+    public Account convertFromRequestDtoToEntity(AccountRequestDto accountDto) {
         Account accountEntity = new Account();
         BeanUtils.copyProperties(accountDto, accountEntity);
         return accountEntity;

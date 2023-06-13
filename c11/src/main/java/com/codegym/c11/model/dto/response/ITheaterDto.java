@@ -2,15 +2,13 @@ package com.codegym.c11.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 public interface ITheaterDto {
-    Long getTheaterId();
-    String getTheaterName();
-    String getMovieName();
-    LocalDateTime getShowTime();
-    LocalDateTime getShowDate();
-    String getRoomName();
+    Long getTheater_id();
+    String getTheater_name();
+    String getMovie_name();
+    String getShow_time();
+    String getShow_date();
+    String getRoom_name();
+
 }

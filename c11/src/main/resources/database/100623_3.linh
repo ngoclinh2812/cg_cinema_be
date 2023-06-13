@@ -42,6 +42,8 @@ FOREIGN KEY (movieId) REFERENCES movie(id),
 FOREIGN KEY (scheduleId) REFERENCES schedule(id),
 foreign key (room_id) references room(id)
 );
+alter table schedule_movie rename column movieId TO movie_id;
+alter table schedule_movie rename column scheduleId TO schedule_id;
 
 drop table if exists seattype;
 CREATE table seattype(
@@ -49,6 +51,9 @@ id BIGINT auto_increment primary key,
 typeseat ENUM ('normal','vip'),
 price double not null
 );
+ALTER TABLE seattype RENAME seat_type;
+alter table seat_type rename column typeseat TO type_seat;
+
 
 drop table if exists seat;
 create table seat(
@@ -58,8 +63,10 @@ roomId BIGINT not null,
 seat_type bigint,
 status enum("0", "1"),
 FOREIGN KEY (roomId) REFERENCES room(id),
-FOREIGN KEY (seat_type) REFERENCES seattype(id)
+FOREIGN KEY (seat_type) REFERENCES seat_type(id)
 );
+alter table seat rename column roomId TO room_id;
+
 
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
@@ -93,7 +100,7 @@ CREATE TABLE `account_role` (
   CONSTRAINT `account_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
 );
 
-drop table ticket;
+drop table if exists ticket;
 create table ticket(
 id BIGINT auto_increment primary key,
 user_id bigint not null,
@@ -103,6 +110,8 @@ foreign key (user_id) references account(id),
 foreign key (schedule_movie_id) references schedule_movie(id),
 foreign key (seat_1) references seat(id)
 );
+alter table ticket rename column seat_1 TO seat;
+
 
 
 -- Chèn dữ liệu vào bảng "theater"
@@ -138,7 +147,7 @@ INSERT INTO room (name, theater_id) VALUES
 ('Room 5', 5);
 
 -- Chèn dữ liệu vào bảng "schedule_movie"
-INSERT INTO schedule_movie (movieId, scheduleId, room_id) VALUES
+INSERT INTO schedule_movie (movie_id, schedule_id, room_id) VALUES
 (1, 1, 1),
 (2, 2, 2),
 (3, 3, 3),
@@ -146,7 +155,7 @@ INSERT INTO schedule_movie (movieId, scheduleId, room_id) VALUES
 (5, 5, 5);
 
 -- Chèn dữ liệu vào bảng "seattype"
-INSERT INTO seattype (typeseat, price) VALUES
+INSERT INTO seat_type (type_seat, price) VALUES
 ('normal', 10.0),
 ('vip', 15.0),
 ('normal', 12.0),
@@ -154,7 +163,7 @@ INSERT INTO seattype (typeseat, price) VALUES
 ('normal', 9.0);
 
 -- Chèn dữ liệu vào bảng "seat"
-INSERT INTO seat (name, roomId, seat_type, status) VALUES
+INSERT INTO seat (name, room_id, seat_type, status) VALUES
 ('Seat 1', 1, 1, '0'),
 ('Seat 2', 1, 1, '0'),
 ('Seat 3', 1, 2, '0'),
@@ -186,9 +195,16 @@ INSERT INTO `cinema`.`account_role` (`account_id`, `role_id`) VALUES ('8', '2');
 
 
 -- Chèn dữ liệu vào bảng "ticket"
-INSERT INTO ticket (user_id, schedule_movie_id, seat_1) VALUES
+INSERT INTO ticket (user_id, schedule_movie_id, seat) VALUES
 (1, 1, 1),
 (2, 2, 2),
 (3, 3, 3),
 (4, 4, 4),
 (5, 5, 5);
+
+SELECT sm.id as theaterId, m.name AS movieName, s.show_time AS scheduleShow_time, s.show_date AS scheduleShow_date, r.name AS roomName, t.name AS theaterName
+            FROM schedule_movie sm
+            JOIN movie m ON sm.movieId = m.id
+            JOIN schedule s ON sm.scheduleId = s.id
+            JOIN room r ON sm.room_id = r.id
+            JOIN theater t ON r.theater_id = t.id where t.id = 1;
