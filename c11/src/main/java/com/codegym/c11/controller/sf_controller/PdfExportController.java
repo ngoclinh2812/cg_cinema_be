@@ -1,6 +1,6 @@
 package com.codegym.c11.controller.sf_controller;
 
-import com.codegym.c11.model.dto.request.TicketRequestDtoTest;
+import com.codegym.c11.model.dto.Ticket.TicketRequestDtoTest;
 import com.codegym.c11.service.sf.pdf.PDFGeneratorService;
 import com.lowagie.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;

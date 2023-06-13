@@ -32,54 +32,59 @@ public class EmailService {
     @Autowired
     private SendGrid sendGrid;
 
-    private final JavaMailSender javaMailSender;
+    private JavaMailSender javaMailSender;
 
-    @Autowired
-    public EmailService(JavaMailSender javaMailSender) {
-        this.javaMailSender = javaMailSender;
+    public Boolean sendTicketConfirmedEmail(Ticket ticket) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+
+            message.setFrom("cg.cinema11@gmail.com");
+            message.setTo(ticket.getAccount().getEmail());
+
+            String bodyText = createBodyText(ticket);
+            message.setText(bodyText);
+
+            String subjectText = "Giao dịch thành công";
+            message.setSubject(subjectText);
+
+            javaMailSender.send(message);
+            System.out.println("Mail Sent...");
+            return true; // Return true indicating successful email sending
+        } catch (Exception e) {
+            System.out.println("Failed to send email: " + e.getMessage());
+            return false; // Return false indicating failed email sending
+        }
     }
-
-    public void sendTicketConfirmedEmail(Ticket ticket) {
-        SimpleMailMessage message = new SimpleMailMessage();
-
-        message.setFrom("cg.cinema11@gmail.com");
-        message.setTo(ticket.getAccount().getEmail());
-
-        String bodyText = createBodyText(ticket);
-        message.setText(bodyText);
-
-        String subjectText = ("Giao dịch thành công");
-        message.setSubject(subjectText);
-
-        javaMailSender.send(message);
-        System.out.println("Mail Sent...");
-    }
-
 
     private String createBodyText(Ticket ticket) {
         return "Thông tin vé:\t"
-                + "Tên phim: " + ticket.getScheduleMovie().getMovie()
-                + "Rạp: "
-                + "Phòng chiếu: " + ticket.getScheduleMovie()
-                + "Suất chiếu: "
-                + "Ghế: " + ticket.getSeat()
-                + "Tổng cộng: "
+                + "Tên phim: " + ticket.getScheduleMovie().getMovie().getName() + " \t"
+                + "Rạp: " + " \t"
+                + "Phòng chiếu: " + ticket.getScheduleMovie().getRoom().getName() + " \t"
+                + "Ngày chiếu: " + ticket.getScheduleMovie().getSchedule().getShowDate() + " \t"
+                + "Giờ chiếu: " + ticket.getScheduleMovie().getSchedule().getShowTime() + " \t"
+                + "Ghế: " + ticket.getSeat().getName() + " \t"
+                + "Tổng cộng: " + " \t"
                 + "Cảm ơn quý khách đã lựa chọn CG Cinema!";
     }
 
     public void sendAccountConfirmEmail(String email) {
-        SimpleMailMessage message = new SimpleMailMessage();
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
 
-        message.setFrom("cg.cinema11@gmail.com");
+            message.setFrom("cg.cinema11@gmail.com");
 
-        message.setTo(email);
+            message.setTo(email);
 
-        message.setText("Chúc mừng quý khách đã trở thành hội viên của CG Cinema.");
+            message.setText("Chúc mừng quý khách đã trở thành hội viên của CG Cinema.");
 
-        message.setSubject("Email xác nhận đăng ký");
+            message.setSubject("Đăng ký thành công");
 
-        javaMailSender.send(message);
-        System.out.println("Mail Sent...");
+            javaMailSender.send(message);
+            System.out.println("Mail Sent...");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 //    public String sendEmailBySendGrid(String email) {

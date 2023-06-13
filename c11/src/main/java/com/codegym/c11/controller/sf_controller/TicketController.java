@@ -1,13 +1,12 @@
 package com.codegym.c11.controller.sf_controller;
 
-import com.codegym.c11.model.dto.request.Ticket.TicketRequestDto;
+import com.codegym.c11.model.dto.Ticket.request.TicketRequestDto;
 import com.codegym.c11.model.entity.Ticket;
 import com.codegym.c11.service.sf.IAccountService;
 import com.codegym.c11.service.sf.email.EmailService;
 import com.codegym.c11.service.sf.ticket.TicketService;
 import com.codegym.c11.utils.TicketMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +30,13 @@ public class TicketController {
     @PostMapping()
     public ResponseEntity<?> createTicket(@RequestBody TicketRequestDto ticketDto) {
         Ticket savedTicket = ticketService.save(ticketDto);
-        emailService.sendTicketConfirmedEmail(savedTicket);
-        return ResponseEntity.ok(savedTicket);
+        if (savedTicket != null) {
+            Boolean isMailSent = emailService.sendTicketConfirmedEmail(savedTicket);
+            if (isMailSent) {
+                return new ResponseEntity<>(savedTicket, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping
