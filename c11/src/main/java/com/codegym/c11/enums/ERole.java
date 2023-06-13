@@ -1,5 +1,5 @@
 package com.codegym.c11.enums;
 
 public enum ERole {
-    USER, ADMIN
+    ROLE_USER, ROLE_ADMIN
 }

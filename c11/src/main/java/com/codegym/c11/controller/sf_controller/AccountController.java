@@ -44,10 +44,9 @@ public class AccountController {
             boolean validateAccount = accountService.validateAccount(newAccount);
 
             if (validateAccount == true) {
-                emailService.sendAccountConfirmEmail(newAccount.getEmail());
-
                 accountService.saveNewAccount(newAccount);
-                return new ResponseEntity<>(HttpStatus.OK);
+                emailService.sendAccountConfirmEmail(newAccount.getEmail());
+                return new ResponseEntity<>(newAccount, HttpStatus.OK);
             }
 
         } catch (Exception e) {

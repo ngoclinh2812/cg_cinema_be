@@ -1,5 +1,6 @@
 package com.codegym.c11.service.sf.ticket.impl;
 
+import com.codegym.c11.enums.ESeatStatus;
 import com.codegym.c11.model.dto.Ticket.request.TicketRequestDto;
 import com.codegym.c11.model.entity.Account;
 import com.codegym.c11.model.entity.ScheduleMovie;
@@ -48,14 +49,15 @@ public class TicketServiceImpl implements TicketService {
                                             ticketDto.getScheduleMovie().getRoom().getId());
         Seat seat = seatService.getSeatById(ticketDto.getSeat().getId());
 
-        if (account != null && scheduleMovie != null && seat != null) {
+        if ((account != null) && (scheduleMovie != null) && (seat != null)) {
             ticket.setId(ticketDto.getId());
             ticket.setScheduleMovie(scheduleMovie);
             ticket.setAccount(account);
+            seat.setStatus(ESeatStatus.FULL);
             ticket.setSeat(seat);
-            return ticketRepository.save(ticket);
+            ticketRepository.save(ticket);
         }
-        return null;
+        return ticketRepository.findById(ticket.getId()).orElse(null);
     }
 
     public Ticket getTicketById(Long ticketId) {
