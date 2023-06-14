@@ -1,5 +1,7 @@
 package com.codegym.c11.controller.sf_controller;
 
+import com.codegym.c11.exception.api.ResourceNotFoundException;
+import com.codegym.c11.exception.api.ValidationException;
 import com.codegym.c11.model.dto.request.AccountRequestDto;
 import com.codegym.c11.model.dto.response.EmailResponseDto;
 import com.codegym.c11.model.entity.Account;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController(value = "sfAccountController")
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("/api/sf/account")
 public class AccountController {
 
@@ -30,11 +33,14 @@ public class AccountController {
             String token = accountService.login(accountDto);
             if (token != null) {
                 return new ResponseEntity<>(token, HttpStatus.OK);
+            } else {
+                throw new ResourceNotFoundException("Account not found");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/signup")
@@ -43,16 +49,17 @@ public class AccountController {
             Account newAccount = accountMapper.convertFromRequestDtoToEntity(accountRequestDto);
             boolean validateAccount = accountService.validateAccount(newAccount);
 
-            if (validateAccount == true) {
-                emailService.sendAccountConfirmEmail(newAccount.getEmail());
-
+            if (validateAccount) {
                 accountService.saveNewAccount(newAccount);
-                return new ResponseEntity<>(HttpStatus.OK);
+                emailService.sendAccountConfirmEmail(newAccount.getEmail());
+                return new ResponseEntity<>(newAccount, HttpStatus.OK);
+            } else {
+                throw new ValidationException("Invalid account");
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ValidationException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,6 +1,6 @@
 package com.codegym.c11.service.sf.pdf;
 
-import com.codegym.c11.model.dto.request.TicketRequestDtoTest;
+import com.codegym.c11.model.dto.Ticket.TicketRequestDtoTest;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.Rectangle;

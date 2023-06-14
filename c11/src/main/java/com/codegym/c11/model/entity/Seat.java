@@ -32,6 +32,6 @@ public class Seat {
     @OneToMany(mappedBy = "seat")
     private List<Ticket> ticketList;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private ESeatStatus status;
 }
