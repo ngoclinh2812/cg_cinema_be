@@ -24,6 +24,7 @@ public class Theater {
     private String phone;
     private String img;
 
+
     @OneToMany(mappedBy = "TheaterId")
     private List<Room> roomList;
 }

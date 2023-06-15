@@ -42,7 +42,6 @@ public class MovieController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
         }
     }
-
     @GetMapping("/{movieId}")
     public ResponseEntity<?> findById(
             @PathVariable(value = "movieId") Long id) {
@@ -56,5 +55,4 @@ public class MovieController {
     }
 
 }
-
 

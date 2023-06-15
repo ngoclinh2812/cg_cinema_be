@@ -24,6 +24,8 @@ public interface TheaterRepository extends JpaRepository<Theater, Long> {
             "WHERE t.id = :id ;", nativeQuery = true,
             countQuery = "SELECT count(*) "+
                     "FROM schedule_movie sm " +
+                    "INNER JOIN movie m ON sm.movieId = m.id " +
+                    "INNER JOIN schedule s ON sm.scheduleId = s.id " +
                     "INNER JOIN movie m ON sm.movie_id = m.id " +
                     "INNER JOIN schedule s ON sm.schedule_id = s.id " +
                     "INNER JOIN room r ON sm.room_id = r.id " +
