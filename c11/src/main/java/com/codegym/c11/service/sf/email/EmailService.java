@@ -39,7 +39,8 @@ public class EmailService {
             SimpleMailMessage message = new SimpleMailMessage();
 
             message.setFrom("cg.cinema11@gmail.com");
-            message.setTo(ticket.getAccount().getEmail());
+            String email = ticket.getAccount().getEmail();
+            message.setTo(email);
 
             String bodyText = createBodyText(ticket);
             message.setText(bodyText);
