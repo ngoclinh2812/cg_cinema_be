@@ -18,6 +18,5 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     @Query(value = "select * from movie where name like %:name% ORDER BY name ASC", nativeQuery = true)
     Page<Movie> findByName(@Param("name") String name, Pageable pageable);
 
-
     void deleteAllById(Long id);
 }
