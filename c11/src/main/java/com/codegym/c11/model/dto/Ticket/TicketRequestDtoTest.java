@@ -1,4 +1,4 @@
-package com.codegym.c11.model.dto.request;
+package com.codegym.c11.model.dto.Ticket;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -13,13 +13,4 @@ public class TicketRequestDtoTest {
     private String screeningRoom;
     private String showTime;
     private String seats;
-//                    "Ticket Code: " + ticketCode,
-//            "Movie Title: " + movieTitle,
-//            "Cinema: " + cinema,
-//            "Screening Room: " + screeningRoom,
-//            "Showtime: " + showtime,
-//            "Seats: " + seats,
-//            "Price: " + price,
-//            "Promotion: " + promotion,
-//            "Total: " + total
 }

@@ -1,8 +1,8 @@
 package com.codegym.c11.model.entity;
 
+import com.codegym.c11.enums.ERole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -23,32 +23,10 @@ public class AccountRoles {
 
     @ManyToOne
     @JoinColumn(name = "role_id")
+    @Enumerated(EnumType.ORDINAL)
     private Role role;
 
-    public AccountRoles() {
+    public AccountRoles(Account account, ERole roleUser) {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role roles) {
-        this.role = roles;
-    }
 }
