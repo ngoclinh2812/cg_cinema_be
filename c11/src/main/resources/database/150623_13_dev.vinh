@@ -1,0 +1,322 @@
+drop database if exists cinema_dev;
+create database cinema_dev;
+use cinema_dev;
+
+create table theater (
+id BIGINT auto_increment primary key,
+name varchar(255) NOT NULL,
+address varchar(255) NOT NULL,
+phone varchar(255) NOT NULL,
+img varchar(255)
+);
+
+drop table if exists movie;
+create table movie (
+id BIGINT auto_increment primary key,
+name varchar(255) not null,
+description varchar(255) not null,
+trailer varchar(255) not null,
+img varchar(255) not null,
+date_start date default null,
+date_end date default null,
+CHECK (date_end > date_start)
+);
+alter table movie add column genre varchar(255) not null;
+alter table movie add column duration varchar(255) not null;
+alter table movie add column rating varchar(255) not null;
+alter table movie modify column duration int not null;
+
+
+create table schedule (
+id BIGINT auto_increment primary key,
+show_time datetime not null,
+show_date datetime not null
+);
+
+drop table if exists room;
+create table room (
+id BIGINT auto_increment primary key,
+name varchar(255) not null,
+theater_id BIGINT NOT NULL,
+FOREIGN KEY (theater_id) references theater(id)
+);
+
+drop table if exists schedule_movie;
+create table schedule_movie (
+id BIGINT auto_increment primary key,
+movieId BIGINT not null,
+scheduleId BIGINT not null,
+room_id bigint not null,
+FOREIGN KEY (movieId) REFERENCES movie(id),
+FOREIGN KEY (scheduleId) REFERENCES schedule(id),
+foreign key (room_id) references room(id)
+);
+alter table schedule_movie rename column movieId TO movie_id;
+alter table schedule_movie rename column scheduleId TO schedule_id;
+
+drop table if exists seattype;
+CREATE table seattype(
+id BIGINT auto_increment primary key,
+typeseat ENUM ('normal','vip'),
+price double not null
+);
+ALTER TABLE seattype RENAME seat_type;
+alter table seat_type rename column typeseat TO type_seat;
+
+drop table if exists seat;
+create table seat(
+id BIGINT auto_increment primary key,
+name varchar(55) not null,
+roomId BIGINT not null,
+seat_type bigint,
+status enum('EMPTY', 'FULL') DEFAULT 'EMPTY',
+FOREIGN KEY (roomId) REFERENCES room(id),
+FOREIGN KEY (seat_type) REFERENCES seat_type(id)
+);
+alter table seat rename column roomId TO room_id;
+
+DROP TABLE IF EXISTS `account`;
+CREATE TABLE `account` (
+	`id` BIGINT NOT NULL AUTO_INCREMENT,
+	`first_name` text,
+	`last_name` text,
+	`phone` varchar(45) DEFAULT NULL,
+    `email` VARCHAR(255) NOT NULL,
+    `username` VARCHAR(50) NOT NULL,
+    `password` varchar(500) DEFAULT NULL,
+    `img` VARCHAR(255) DEFAULT "https://cdn-icons-png.flaticon.com/512/21/21104.png",
+    PRIMARY KEY (`id`)
+);
+
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+alter table `role` modify column `name` enum('ROLE_USER', 'ROLE_ADMIN') default 'ROLE_USER';
+
+DROP TABLE IF EXISTS `account_role`;
+CREATE TABLE `account_role` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `account_id` BIGINT NOT NULL,
+  `role_id` BIGINT NOT NULL DEFAULT 2,
+  PRIMARY KEY (`id`),
+  KEY `account_id` (`account_id`),
+  KEY `role_id` (`role_id`),
+  CONSTRAINT `account_roles_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`),
+  CONSTRAINT `account_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
+);
+-- Drop the existing foreign key constraint
+ALTER TABLE account_role DROP FOREIGN KEY account_roles_ibfk_1;
+
+-- Recreate the foreign key constraint with ON DELETE CASCADE option
+ALTER TABLE account_role
+ADD CONSTRAINT account_roles_ibfk_1
+FOREIGN KEY (account_id) REFERENCES account (id)
+ON DELETE CASCADE;
+
+
+drop table if exists ticket;
+create table ticket(
+id BIGINT auto_increment primary key,
+user_id bigint not null,
+schedule_movie_id bigint not null,
+seat_1 bigint not null,
+foreign key (user_id) references account(id),
+foreign key (schedule_movie_id) references schedule_movie(id),
+foreign key (seat_1) references seat(id)
+);
+alter table ticket rename column seat_1 TO seat;
+
+-- Chèn dữ liệu vào bảng "theater"
+INSERT INTO theater (name, address, phone, img) VALUES
+('Theater 1', '123 Main Street', '111-111-1111', 'theater1.jpg'),
+('Theater 2', '456 Broadway', '222-222-2222', 'theater2.jpg'),
+('Theater 3', '789 Elm Avenue', '333-333-3333', 'theater3.jpg'),
+('Theater 4', '321 Oak Drive', '444-444-4444', 'theater4.jpg'),
+('Theater 5', '555 Pine Road', '555-555-5555', 'theater5.jpg');
+
+-- Chèn dữ liệu vào bảng "movie"
+INSERT INTO movie  (name, description, trailer, img, genre, duration, rating, date_start, date_end)
+VALUES
+('Avengers: Endgame', 'The Avengers must assemble once again to defeat Thanos.', 'https://www.youtube.com/watch?v=TcMBFSGVi1c', 'https://images.squarespace-cdn.com/content/v1/556489d4e4b064c1f32b6812/1452895990247-CD7HVX82NTS3U3SSKZCB/the_avengers.jpg', 'Action, Adventure, Sci-Fi', '170','8.0', '2023-08-01', '2023-08-15'),
+('Spider-Man: No Way Home', 'Peter Parker''s identity is revealed, and he seeks help from Doctor Strange.', 'https://www.youtube.com/watch?v=g4Hbz2jLxvQ', 'https://clipartix.com/wp-content/uploads/2019/02/spiderman-clipart-2019-15.jpg', 'Action, Adventure, Fantasy', '180','7.8', '2023-07-01', '2023-07-15'),
+('Black Widow', 'Natasha Romanoff confronts her past and deals with dangerous conspiracies.', 'https://www.youtube.com/watch?v=Fp9pNPdNwjI', 'https://cdn.galaxycine.vn/media/2023/6/1/300x450_1685607263025.jpg', 'Action, Adventure, Thriller', '160','6.8', '2023-06-01', '2023-06-15'),
+('Shang-Chi and the Legend of the Ten Rings', 'Shang-Chi must confront the past he thought he left behind when he is drawn into the web of the mysterious Ten Rings organization.', 'https://www.youtube.com/watch?v=8YjFbMbfXaQ', 'shangchi.jpg', 'Action, Adventure, Fantasy', '175','7.8', '2023-11-01', '2023-11-15'),
+('Eternals', 'A group of immortal beings known as the Eternals come out of hiding to protect humanity from their evil counterparts, the Deviants.', 'https://www.youtube.com/watch?v=0WVDKZJkGlY', 'eternals.jpg', 'Action, Adventure, Drama', '150','', '2023-09-01', '2023-09-15'),
+('Wonder Woman 1984', 'Diana Prince faces off against Maxwell Lord and the Cheetah as she navigates life in the 1980s.', 'https://www.youtube.com/watch?v=sfM7_JLk-84', 'wonderwoman.jpg', 'Action, Adventure, Fantasy', '120','7.0', '2023-10-01', '2023-10-15');
+
+
+-- Chèn dữ liệu vào bảng "schedule"
+INSERT INTO schedule (show_time, show_date) VALUES
+('2023-06-08 19:00:00', '2023-06-08'),
+('2023-06-08 21:00:00', '2023-06-08'),
+('2023-06-09 18:30:00', '2023-06-09'),
+('2023-06-09 20:30:00', '2023-06-09'),
+('2023-06-10 19:30:00', '2023-06-10');
+
+-- Chèn dữ liệu vào bảng "room"
+INSERT INTO room (name, theater_id) VALUES
+('Room 1', 1),
+('Room 2', 1),
+('Room 3', 1),
+('Room 4', 1),
+('Room 5', 1),
+('Room 1', 2),
+('Room 2', 2),
+('Room 3', 2),
+('Room 4', 2),
+('Room 5', 2),
+('Room 1', 3),
+('Room 2', 3),
+('Room 3', 3),
+('Room 4', 3),
+('Room 5', 3),
+('Room 1', 4),
+('Room 2', 4),
+('Room 3', 4),
+('Room 4', 4),
+('Room 5', 4),
+('Room 1', 5),
+('Room 2', 5),
+('Room 3', 5),
+('Room 4', 5),
+('Room 5', 5);
+
+-- Chèn dữ liệu vào bảng "schedule_movie"
+INSERT INTO schedule_movie (movie_id, schedule_id, room_id) VALUES
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 3),
+(4, 4, 4),
+(5, 5, 5);
+
+-- Chèn dữ liệu vào bảng "seattype"
+INSERT INTO seat_type (type_seat, price) VALUES
+('normal', 10.0),
+('vip', 15.0),
+('normal', 12.0),
+('vip', 18.0),
+('normal', 9.0);
+
+
+-- Chèn dữ liệu vào bảng "account"
+INSERT INTO `account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Ngoc Linh', 'Hoang', '0385281204', 'hngoclinh2812@gmail.com', 'linhoang', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-563642.jpg?w=360');
+INSERT INTO `account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Ngọc Phương Thảo', 'Lê', '0974608448', 'lengocphuongthao@gmail.com', 'thaole', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-804790.jpg');
+INSERT INTO `account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Thiên Phú', 'Trần', '0399726725', 'tranthienphu@gmail.com', 'phutran', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-563642.jpg?w=360');
+INSERT INTO `account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Nhật Khang', 'Đoàn', '0582202677', 'doannhatkhang@gmail.com', 'khangdoan', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-804790.jpg');
+INSERT INTO `account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Văn Chính', 'Phạm', '0962949846', 'chinh.pham@codegym.vn', 'chinhpham', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-804790.jpg');
+INSERT INTO `account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Thị Hồng Anh', 'Nguyễn', '0988717437', 'anh.nguyen@codegym.vn', 'anhnguyen', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
+INSERT INTO `account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Bá Minh Đạo', 'Nguyễn', '0908983906', 'dao.nguyen@codegym.vn', 'daonguyen', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
+INSERT INTO `account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`) VALUES ('Thùy Dương', 'Phạm', '0919983586', 'duong.pham@codegym.vn', 'duongpham', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO');
+
+INSERT INTO `role` VALUES (1,'ROLE_USER'),(2,'ROLE_ADMIN');
+
+INSERT INTO `account_role` (`account_id`, `role_id`) VALUES ('1', '1');
+INSERT INTO `account_role` (`account_id`, `role_id`) VALUES ('2', '1');
+INSERT INTO `account_role` (`account_id`, `role_id`) VALUES ('3', '1');
+INSERT INTO `account_role` (`account_id`, `role_id`) VALUES ('4', '2');
+INSERT INTO `account_role` (`account_id`, `role_id`) VALUES ('5', '1');
+INSERT INTO `account_role` (`account_id`, `role_id`) VALUES ('6', '1');
+INSERT INTO `account_role` (`account_id`, `role_id`) VALUES ('7', '1');
+INSERT INTO `account_role` (`account_id`, `role_id`) VALUES ('8', '2');
+
+
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('5', '5', '6');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('4', '4', '7');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('3', '3', '8');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('2', '2', '9');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('1', '1', '10');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('1', '1', '11');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('2', '2', '12');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('3', '3', '13');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('4', '4', '14');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('5', '5', '15');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('1', '1', '16');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('2', '2', '17');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('3', '3', '18');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('4', '4', '19');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('5', '5', '20');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('2', '2', '21');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('1', '1', '22');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('3', '3', '23');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('4', '4', '24');
+INSERT INTO `cinema_dev`.`schedule_movie` (`movie_id`, `schedule_id`, `room_id`) VALUES ('5', '5', '25');
+
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('A1', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('A2', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('A3', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('A4', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('A5', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('A6', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('A7', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('A8', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('B1', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('B2', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('B3', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('B4', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('B5', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('B6', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('B7', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('B8', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('C1', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('C2', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('C3', '5', '2', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('C4', '5', '2', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('C5', '5', '2', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('C6', '5', '2', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('C7', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('C8', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('D1', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('D2', '5', '2', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('D3', '5', '2', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('D4', '5', '2', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('D5', '5', '2', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('D6', '5', '2', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('D7', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('D8', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('E1', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('E2', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('E3', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('E4', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('E5', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('E6', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('E7', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('E8', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('F1', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('F2', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('F3', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('F4', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('F5', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('F6', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('F7', '5', '1', 'EMPTY');
+INSERT INTO `cinema_dev`.`seat` (`name`, `room_id`, `seat_type`, `status`) VALUES ('F8', '5', '1', 'EMPTY');
+
+-- Chèn dữ liệu vào bảng "ticket"
+INSERT INTO ticket (user_id, schedule_movie_id, seat) VALUES
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 3),
+(4, 4, 4),
+(5, 5, 5);
+
+-- Khi account mới được lưu vào database thì account_role sẽ tự động thêm một record mới, có role_id mặc định là user
+DELIMITER //
+CREATE TRIGGER account_insert_trigger AFTER INSERT ON account
+FOR EACH ROW
+BEGIN
+    -- Insert a new record into account_role table
+    INSERT INTO account_role (account_id, role_id) VALUES (NEW.id, 2);
+END //
+DELIMITER ;
+
+-- Khi một account bị xóa, account_role của nó cũng bị xóa theo
+DELIMITER //
+CREATE TRIGGER account_delete_trigger AFTER DELETE ON account
+FOR EACH ROW
+BEGIN
+    -- Delete the corresponding record from account_role table
+    DELETE FROM account_role WHERE account_id = OLD.id;
+END //
+DELIMITER ;

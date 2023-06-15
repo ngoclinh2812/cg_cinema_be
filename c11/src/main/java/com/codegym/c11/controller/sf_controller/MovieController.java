@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:3001")
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("/api/movies")
 public class MovieController {
 
@@ -22,17 +22,25 @@ public class MovieController {
     private MovieService movieService;
 
     @GetMapping("")
-    private ResponseEntity<PageResponseDto<MovieResponseDto>> fillAll(@PageableDefault(value = 10)Pageable pageable){
-        return new ResponseEntity<>(movieService.findAllMovies(pageable), HttpStatus.OK);
+    private ResponseEntity<?> fillAll(@PageableDefault(value = 10) Pageable pageable) {
+        try {
+            PageResponseDto<MovieResponseDto> movies = movieService.findAllMovies(pageable);
+            return new ResponseEntity<>(movies, HttpStatus.OK);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+        }
     }
-
 
     @GetMapping("/search")
-    public ResponseEntity<PageResponseDto<MovieResponseDto>> findByName(
+    public ResponseEntity<?> findByName(
             @RequestParam(value = "name") String name,
             @PageableDefault(size = 10) Pageable pageable) {
-        PageResponseDto<MovieResponseDto> movieDtos = movieService.findByName(name, pageable);
-        return new ResponseEntity<>(movieDtos, HttpStatus.OK);
+        try {
+            PageResponseDto<MovieResponseDto> movieDtos = movieService.findByName(name, pageable);
+            return new ResponseEntity<>(movieDtos, HttpStatus.OK);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+        }
     }
-    }
+}
 
