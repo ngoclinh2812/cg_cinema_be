@@ -1,8 +1,16 @@
 package com.codegym.c11.model.dto.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Sort;
+
 import java.io.Serializable;
 import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PageResponseDto<T> implements Serializable {
     private int totalPage;
 

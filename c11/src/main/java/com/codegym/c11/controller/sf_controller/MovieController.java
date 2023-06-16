@@ -42,5 +42,17 @@ public class MovieController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
         }
     }
+    @GetMapping("/{movieId}")
+    public ResponseEntity<?> findById(
+            @PathVariable(value = "movieId") Long id) {
+        try {
+            MovieResponseDto movieResponseDto = movieService.findById(id);
+            return new ResponseEntity<>(movieResponseDto, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Could not find movie.");
+        }
+    }
+
 }
 
