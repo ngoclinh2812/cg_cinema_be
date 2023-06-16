@@ -91,7 +91,7 @@ public class MovieServiceImpl implements MovieService {
         for (MovieResponseDto movieDto : dataList) {
             LocalDate currentDate = LocalDate.now();
             String movieStatus = checkMovieStatus(movieDto.getDateStart(), movieDto.getDateEnd(), currentDate);
-            LocalDate dateStart = movieDto.getDateEnd();
+            Date dateStart = movieDto.getDateEnd();
         }
         return responseDtos;
     }
@@ -111,21 +111,21 @@ public class MovieServiceImpl implements MovieService {
         for (MovieResponseDto movieDto : dataList) {
             LocalDate currentDate = LocalDate.now();
             String movieStatus = checkMovieStatus(movieDto.getDateStart(), movieDto.getDateEnd(), currentDate);
-            LocalDate dateEnd = movieDto.getDateEnd();
+            Date dateEnd = movieDto.getDateEnd();
         }
         return responseDtos;
     }
-
-    private String checkMovieStatus(Date dateStart, LocalDate dateEnd, LocalDate currentDate) {
+    private String checkMovieStatus(Date dateStart, Date dateEnd, LocalDate currentDate) {
         LocalDate startDate = dateStart.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate endDate = dateEnd.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
         if (currentDate.isBefore(startDate)) {
             return "Phim sắp chiếu";
-        } else if (currentDate.isEqual(startDate) || (currentDate.isAfter(startDate) && currentDate.isBefore(dateEnd))) {
+        } else if (currentDate.isEqual(startDate) || (currentDate.isAfter(startDate) && currentDate.isBefore(endDate))) {
             return "Phim đang chiếu";
-        } else if (currentDate.isEqual(dateEnd) || currentDate.isAfter(dateEnd)) {
-            return "Phim đã kết thúc";
         }
         return "";
     }
+
     
 }
