@@ -25,6 +25,7 @@ public class Movie {
     private String description;
     private String trailer;
     private String img;
+    private String genre;
     private Date dateStart;
     private LocalDate dateEnd;
 

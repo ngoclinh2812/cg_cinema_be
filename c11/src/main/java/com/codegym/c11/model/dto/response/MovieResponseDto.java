@@ -10,6 +10,7 @@ public class MovieResponseDto {
     private Long id;
     private String name;
     private String description;
+    private String genre;
     private String trailer;
     private String img;
     private Date dateStart;
