@@ -45,7 +45,6 @@ public class MovieController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
         }
     }
-<<<<<<< HEAD
 
     @GetMapping("/ongoing")
     public ResponseEntity<PageResponseDto<MovieResponseDto>> findOnGoingMovies(){
@@ -58,10 +57,8 @@ public class MovieController {
         PageResponseDto<MovieResponseDto> movieDates = movieService.findComingSoonMovies(Pageable.unpaged());
         return new ResponseEntity<>(movieDates, HttpStatus.OK);
     }
-}
 
-=======
-    @GetMapping("/{movieId}")
+ @GetMapping("/{movieId}")
     public ResponseEntity<?> findById(
             @PathVariable(value = "movieId") Long id) {
         try {
@@ -74,5 +71,4 @@ public class MovieController {
     }
 
 }
->>>>>>> eb646a8b304d123be5c917499743ce909760ade1
 
