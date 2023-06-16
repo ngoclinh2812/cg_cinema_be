@@ -7,11 +7,7 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.26/8f8cf0372abf564913e9796623aac4c8ea44025a/lombok-1.18.26.jar" />
         </processorPath>
-<<<<<<< HEAD
         <module name="c11.main" />
-=======
-        <module name="cg_cinema_be.c11.main" />
->>>>>>> 8208a6cc90e2f9cc666b4b218272bb823ad48efc
       </profile>
     </annotationProcessing>
   </component>

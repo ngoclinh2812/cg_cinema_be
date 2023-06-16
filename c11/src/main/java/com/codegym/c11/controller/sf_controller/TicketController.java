@@ -3,7 +3,10 @@ package com.codegym.c11.controller.sf_controller;
 import com.codegym.c11.exception.GlobalExceptionHandler;
 import com.codegym.c11.exception.api.EmailSendingException;
 import com.codegym.c11.exception.api.ResourceNotFoundException;
+import com.codegym.c11.model.dto.Ticket.TicketResponseDto;
+import com.codegym.c11.model.dto.Ticket.request.TicketAccountDto;
 import com.codegym.c11.model.dto.Ticket.request.TicketRequestDto;
+import com.codegym.c11.model.dto.response.PageResponseDto;
 import com.codegym.c11.model.entity.Ticket;
 import com.codegym.c11.service.sf.IAccountService;
 import com.codegym.c11.service.sf.email.EmailService;
@@ -13,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/ticket")
@@ -28,17 +33,28 @@ public class TicketController {
     @Autowired
     private EmailService emailService;
 
-    @PostMapping()
+    @GetMapping
+    public ResponseEntity<?> getUserTickets(HttpServletRequest request) {
+        try {
+            String username = (String) request.getAttribute("username");
+            if (username != null) {
+                PageResponseDto<TicketResponseDto> tickets = ticketService.getTicketByUser(username);
+                return new ResponseEntity<>(tickets, HttpStatus.OK);
+            } else {
+                // Handle the case when the username attribute is not found
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Could not get ticket. Please try again.");
+        }
+    }
+
+    @PostMapping("/save")
     public ResponseEntity<?> createTicket(@RequestBody TicketRequestDto ticketDto) {
         try {
             Ticket savedTicket = ticketService.save(ticketDto);
             if (savedTicket != null) {
-                Boolean isMailSent = emailService.sendTicketConfirmedEmail(savedTicket);
-                if (isMailSent) {
                     return ResponseEntity.ok(savedTicket);
-                } else {
-                    throw new EmailSendingException("Failed to send the ticket confirmation email");
-                }
             } else {
                 throw new ResourceNotFoundException("Failed to save the ticket");
             }
@@ -51,8 +67,6 @@ public class TicketController {
         }
     }
 
-    @GetMapping
-    public String test() {
-        return "Hello";
-    }
+
+
 }
