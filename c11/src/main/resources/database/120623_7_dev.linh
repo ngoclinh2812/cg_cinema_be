@@ -1,6 +1,6 @@
-drop database if exists cinema_staging;
-create database cinema_staging;
-use cinema_staging;
+drop database if exists cinema_dev;
+create database cinema_dev;
+use cinema_dev;
 
 create table theater (
 id BIGINT auto_increment primary key,
