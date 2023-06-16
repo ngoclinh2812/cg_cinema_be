@@ -13,7 +13,7 @@ public class MovieResponseDto {
     private String trailer;
     private String img;
     private Date dateStart;
-    private LocalDate dateEnd;
+    private Date dateEnd;
 
 }
 
