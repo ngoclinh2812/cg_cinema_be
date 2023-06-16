@@ -22,6 +22,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     @Query(value = "select * from movie where name like %:name% ORDER BY name ASC", nativeQuery = true)
     Page<Movie> findByName(@Param("name") String name, Pageable pageable);
 
+<<<<<<< HEAD
     @Query("select dateStart from Movie")
     List<Date> findDateStartBy();
 
@@ -35,6 +36,8 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     @Override
     <S extends Movie> boolean exists(Example<S> example);
 
+=======
+>>>>>>> eb646a8b304d123be5c917499743ce909760ade1
     void deleteAllById(Long id);
 
     

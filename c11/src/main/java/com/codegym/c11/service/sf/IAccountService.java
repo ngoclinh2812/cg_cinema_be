@@ -20,4 +20,6 @@ public interface IAccountService {
     String loginAsAdmin(AccountRequestDto accountDto);
 
     Account findByUsername(String username);
+
+    Account findById(Long id);
 }

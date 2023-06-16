@@ -44,7 +44,6 @@ public class MovieServiceImpl implements MovieService {
         responseDto.setSize(movies.getSize());
         responseDto.setDataList(movieMapper.toListDto(movies.getContent()));
         return responseDto;
-
     }
     @Override
     public MovieResponseDto findById(Long id) {

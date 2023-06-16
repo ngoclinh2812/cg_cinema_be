@@ -24,6 +24,9 @@ public class AccountServiceImpl implements IAccountService {
     private AccountRepository accountRepository;
 
     @Autowired
+    private AccountRoleService accountRoleService;
+
+    @Autowired
     private JwtProvider jwtProvider;
 
     @Override
@@ -121,8 +124,13 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
+    public Account findById(Long id) {
+        return accountRepository.findById(id).orElseThrow();
+    }
+
+    @Override
     public String login(AccountRequestDto accountDto) {
-        Optional<Account> account = accountRepository.findByEmail(accountDto.getEmail());
+        Optional<Account> account = accountRepository.findByUsername(accountDto.getUsername());
         if (account.isPresent()) {
             boolean validateLoginUser = checkLogin(accountDto);
             if(validateLoginUser) {
@@ -137,6 +145,7 @@ public class AccountServiceImpl implements IAccountService {
     public void saveNewAccount(Account newAccount) {
         String hashedPassword = BCrypt.hashpw(newAccount.getPassword(), BCrypt.gensalt(10));
         newAccount.setPassword(hashedPassword);
+//        accountRoleService.saveAccountRoleAsUser(newAccount);
         accountRepository.save(newAccount);
     }
 
@@ -181,7 +190,7 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     public boolean checkLogin(AccountRequestDto accountDto) {
-        Optional<Account> searchAccount = accountRepository.findByEmail(accountDto.getEmail());
+        Optional<Account> searchAccount = accountRepository.findByUsername(accountDto.getUsername());
         if (searchAccount.isPresent()) {
             String password = accountDto.getPassword();
             String passwordDb = searchAccount.get().getPassword();

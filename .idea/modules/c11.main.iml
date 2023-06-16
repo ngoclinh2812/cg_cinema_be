@@ -5,9 +5,4 @@
       <sourceFolder url="file://$MODULE_DIR$/../../c11/build/generated/sources/annotationProcessor/java/main" isTestSource="false" generated="true" />
     </content>
   </component>
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
-    <exclude-output />
-    <orderEntry type="jdk" jdkName="17" jdkType="JavaSDK" />
-    <orderEntry type="sourceFolder" forTests="false" />
-  </component>
 </module>

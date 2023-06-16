@@ -1,5 +1,6 @@
 package com.codegym.c11.repository;
 
+import com.codegym.c11.model.dto.Ticket.request.ScheduleMovieDto;
 import com.codegym.c11.model.dto.response.ITheaterDto;
 import com.codegym.c11.model.entity.Theater;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,10 +24,13 @@ public interface TheaterRepository extends JpaRepository<Theater, Long> {
             "WHERE t.id = :id ;", nativeQuery = true,
             countQuery = "SELECT count(*) "+
                     "FROM schedule_movie sm " +
+                    "INNER JOIN movie m ON sm.movieId = m.id " +
+                    "INNER JOIN schedule s ON sm.scheduleId = s.id " +
                     "INNER JOIN movie m ON sm.movie_id = m.id " +
                     "INNER JOIN schedule s ON sm.schedule_id = s.id " +
                     "INNER JOIN room r ON sm.room_id = r.id " +
                     "INNER JOIN theater t ON r.theater_id = t.id " +
                     " WHERE t.id = :id ")
     List<ITheaterDto> findTheaterById(@Param("id") Long id);
+
 }
