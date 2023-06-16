@@ -2,6 +2,7 @@ package com.codegym.c11.repository;
 
 import com.codegym.c11.model.dto.Ticket.request.ScheduleMovieDto;
 import com.codegym.c11.model.dto.response.ITheaterDto;
+import com.codegym.c11.model.dto.response.TheaterResponseDto;
 import com.codegym.c11.model.entity.Theater;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TheaterRepository extends JpaRepository<Theater, Long> {
@@ -32,5 +34,7 @@ public interface TheaterRepository extends JpaRepository<Theater, Long> {
                     "INNER JOIN theater t ON r.theater_id = t.id " +
                     " WHERE t.id = :id ")
     List<ITheaterDto> findTheaterById(@Param("id") Long id);
+
+
 
 }

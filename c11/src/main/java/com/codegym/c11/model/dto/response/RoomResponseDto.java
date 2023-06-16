@@ -1,5 +1,6 @@
 package com.codegym.c11.model.dto.response;
 
+import com.codegym.c11.model.dto.Ticket.request.ScheduleMovieDto;
 import com.codegym.c11.model.entity.ScheduleMovie;
 import com.codegym.c11.model.entity.Seat;
 import com.codegym.c11.model.entity.Theater;
@@ -18,6 +19,6 @@ public class RoomResponseDto {
     private Long id;
     private String name;
     private Theater TheaterId;
-    private List<Seat> seatList;
-    private List<ScheduleMovie> scheduleMovieList;
+    private List<SeatResponseDto> seatList;
+    private List<ScheduleMovieDto> scheduleMovieList;
 }

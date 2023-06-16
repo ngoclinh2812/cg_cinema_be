@@ -25,6 +25,6 @@ public class Theater {
     private String img;
 
 
-    @OneToMany(mappedBy = "TheaterId")
+    @OneToMany(mappedBy = "TheaterId", fetch = FetchType.LAZY)
     private List<Room> roomList;
 }

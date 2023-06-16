@@ -1,6 +1,7 @@
 package com.codegym.c11.model.dto.response;
 
 import com.codegym.c11.enums.ESeatStatus;
+import com.codegym.c11.model.dto.Ticket.TicketResponseDto;
 import com.codegym.c11.model.entity.Room;
 import com.codegym.c11.model.entity.SeatType;
 import com.codegym.c11.model.entity.Ticket;
@@ -15,8 +16,8 @@ import java.util.List;
 public class SeatResponseDto {
     private Long id;
     private String name;
-    private Room room;
-    private SeatType seatType;
-    private List<Ticket> ticketList;
+    private RoomResponseDto room;
+    private SeatTypeResponseDto seatType;
+    private List<TicketResponseDto> ticketList;
     private ESeatStatus status;
 }
