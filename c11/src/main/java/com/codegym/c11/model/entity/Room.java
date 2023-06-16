@@ -21,11 +21,11 @@ public class Room {
     private Long id;
     private String name;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "theater_id")
     private Theater TheaterId;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<Seat> seatList;
 
     @OneToMany(mappedBy = "room")

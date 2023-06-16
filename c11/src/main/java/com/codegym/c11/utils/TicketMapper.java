@@ -1,8 +1,10 @@
 package com.codegym.c11.utils;
 
+import com.codegym.c11.model.dto.Ticket.TicketResponseDto;
 import com.codegym.c11.model.dto.Ticket.request.ScheduleMovieDto;
 import com.codegym.c11.model.dto.Ticket.request.SeatDto;
 import com.codegym.c11.model.dto.Ticket.request.TicketRequestDto;
+import com.codegym.c11.model.dto.response.TheaterResponseDto;
 import com.codegym.c11.model.entity.*;
 import com.codegym.c11.service.sf.scheduleMovie.IScheduleMovieService;
 import com.codegym.c11.service.sf.IAccountService;
@@ -10,6 +12,9 @@ import com.codegym.c11.service.sf.seat.ISeatService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class TicketMapper {
@@ -54,5 +59,7 @@ public class TicketMapper {
         BeanUtils.copyProperties(scheduleMovieDto, scheduleMovie);
         return scheduleMovie;
     }
+
+
 
 }

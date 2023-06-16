@@ -1,8 +1,9 @@
 package com.codegym.c11.model.dto.response;
 
+import com.codegym.c11.model.entity.Seat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.List;
 
-import java.sql.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public interface ITheaterDto {
@@ -12,4 +13,5 @@ public interface ITheaterDto {
     String getShow_time();
     String getShow_date();
     String getRoom_name();
+
 }
