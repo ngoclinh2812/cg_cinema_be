@@ -2,7 +2,6 @@ package com.codegym.c11.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.sql.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public interface ITheaterDto {
