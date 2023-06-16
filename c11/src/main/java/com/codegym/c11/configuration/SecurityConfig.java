@@ -59,13 +59,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().ignoringAntMatchers("/**").disable();
         http.httpBasic().authenticationEntryPoint(restServicesEntryPoint());
         http.authorizeRequests()
-                .antMatchers("/api/theaters/**").permitAll()
-                .antMatchers("/api/movies/**").permitAll()
-                .antMatchers("/api/sf/account/**").permitAll()
-                .antMatchers("/api/bo/account").permitAll()
-                .antMatchers("/api/ticket/**").permitAll()
-                .antMatchers("/api/room/**").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers("/api/theaters/**").permitAll();
+//                .antMatchers("/api/movies/**").permitAll()
+//                .antMatchers("/api/sf/account/**").permitAll()
+//                .antMatchers("/api/bo/account").permitAll()
+//                .antMatchers("/api/ticket/**").permitAll()
+//                .antMatchers("/api/room/**").permitAll()
+//                .anyRequest().authenticated();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
         http.sessionManagement()
