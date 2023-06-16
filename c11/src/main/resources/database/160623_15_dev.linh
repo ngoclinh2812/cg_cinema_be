@@ -152,7 +152,9 @@ UPDATE `cinema_dev`.`movie` SET `trailer` = 'ybji16u608U' WHERE (`id` = '3');
 UPDATE `cinema_dev`.`movie` SET `trailer` = '8YjFbMbfXaQ' WHERE (`id` = '4');
 UPDATE `cinema_dev`.`movie` SET `trailer` = 'x_me3xsvDgk' WHERE (`id` = '5');
 UPDATE `cinema_dev`.`movie` SET `trailer` = 'sfM7_JLk-84' WHERE (`id` = '6');
-
+UPDATE `cinema_dev`.`movie` SET `img` = 'https://images2.thanhnien.vn/Uploaded/hoalp/2021_12_07/shang-chi-761.jpg' WHERE (`id` = '4');
+UPDATE `cinema_dev`.`movie` SET `img` = 'https://images.immediate.co.uk/production/volatile/sites/3/2022/01/eternals_genavailposter_v3_jan12_lg_a0c7298d-06382e0-e1641845488919.jpg?quality=90&crop=9px,0px,1670px,1112px&resize=980,654' WHERE (`id` = '5');
+UPDATE `cinema_dev`.`movie` SET `img` = 'https://sm.ign.com/t/ign_ap/review/w/wonder-wom/wonder-woman-review_58qv.1200.png' WHERE (`id` = '6');
 
 -- Chèn dữ liệu vào bảng "schedule"
 INSERT INTO schedule (show_time, show_date) VALUES
