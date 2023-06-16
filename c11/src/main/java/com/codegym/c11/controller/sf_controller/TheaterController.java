@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "${app.cors.allowedOrigins}")
@@ -34,4 +35,5 @@ public class TheaterController {
         }
         return new ResponseEntity<>(theaterDtoList, HttpStatus.OK);
     }
+
 }
