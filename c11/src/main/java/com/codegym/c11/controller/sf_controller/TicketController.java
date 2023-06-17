@@ -1,14 +1,11 @@
 package com.codegym.c11.controller.sf_controller;
 
-import com.codegym.c11.exception.GlobalExceptionHandler;
 import com.codegym.c11.exception.api.EmailSendingException;
 import com.codegym.c11.exception.api.ResourceNotFoundException;
 import com.codegym.c11.model.dto.Ticket.TicketResponseDto;
-import com.codegym.c11.model.dto.Ticket.request.TicketAccountDto;
 import com.codegym.c11.model.dto.Ticket.request.TicketRequestDto;
 import com.codegym.c11.model.dto.response.PageResponseDto;
 import com.codegym.c11.model.entity.Ticket;
-import com.codegym.c11.service.sf.IAccountService;
 import com.codegym.c11.service.sf.email.EmailService;
 import com.codegym.c11.service.sf.ticket.TicketService;
 import com.codegym.c11.utils.TicketMapper;
@@ -21,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/ticket")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "${app.cors.allowedOrigins}")
 public class TicketController {
 
     @Autowired
@@ -41,7 +38,6 @@ public class TicketController {
                 PageResponseDto<TicketResponseDto> tickets = ticketService.getTicketByUser(username);
                 return new ResponseEntity<>(tickets, HttpStatus.OK);
             } else {
-                // Handle the case when the username attribute is not found
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
             }
         } catch (Exception e) {
