@@ -58,6 +58,7 @@ public class MovieController {
         return new ResponseEntity<>(movieDates, HttpStatus.OK);
     }
 
+
  @GetMapping("/{movieId}")
     public ResponseEntity<?> findById(
             @PathVariable(value = "movieId") Long id) {
