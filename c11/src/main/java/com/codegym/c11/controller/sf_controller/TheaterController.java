@@ -28,8 +28,8 @@ public class TheaterController {
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<List<ITheaterDto>> getTheaterShowingMovies(@PathVariable("id") Long id){
-        List<ITheaterDto> theaterDtoList = theaterService.getMovieInTheater(id) ;
+    private ResponseEntity<List<ITheaterDto>> getTheaterShowingMovies(@PathVariable("id") String id){
+        List<ITheaterDto> theaterDtoList = theaterService.getMovieInTheater(Long.valueOf(id)) ;
         if (theaterDtoList.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
