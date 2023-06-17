@@ -17,7 +17,7 @@ public interface TheaterRepository extends JpaRepository<Theater, Long> {
     @Query("SELECT th from Theater th")
     List<Theater> listTheaters();
 
-    @Query(value = "SELECT DISTINCT t.id as theater_id,  t.name AS theater_name, m.name AS movie_name, s.show_time, s.show_date, r.name AS room_name " +
+    @Query(value = "SELECT DISTINCT t.id as theater_id,  t.name AS theater_name, m.name AS movie_name, s.show_time, s.show_date, r.name AS room_name, r.id AS room_id " +
             "FROM schedule_movie sm " +
             "INNER JOIN movie m ON sm.movie_id = m.id " +
             "INNER JOIN schedule s ON sm.schedule_id = s.id " +

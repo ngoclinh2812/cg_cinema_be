@@ -11,9 +11,10 @@ import java.util.List;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
-    @Query( value = "SELECT s.name as seat_name, r.id as room_id" +
+    @Query( value = "SELECT s.name as seat_name, r.id as room_id, st.price as price" +
             " FROM Seat s " +
-            " JOIN s.room r " +
+            " JOIN s.room r" +
+            " JOIN s.seatType st" +
             " WHERE r.id = :id ")
     List<IRoomDto> findAllSeatInRoomId(@Param("id") Long id);
 }
