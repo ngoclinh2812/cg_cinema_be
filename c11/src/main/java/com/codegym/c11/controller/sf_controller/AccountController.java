@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController(value = "sfAccountController")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "${app.cors.allowedOrigins}")
 @RequestMapping("/api/sf/account")
 public class AccountController {
 
