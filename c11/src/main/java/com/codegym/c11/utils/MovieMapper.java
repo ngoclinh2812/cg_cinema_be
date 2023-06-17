@@ -33,4 +33,5 @@ public class MovieMapper {
     public  List<MovieResponseDto> toListDto(List<Movie> content) {
         return content.stream().map(ele -> entitiesDto( ele)).collect(Collectors.toList());
     }
+
 }

@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -21,14 +20,30 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    private String name;
+
+    private String title;
+
+    private String summary;
+
     private String description;
+
+    private String duration;
+
     private String trailer;
-    private String img;
+
+    private String imageUrl;
+
+    private Integer rating;
+
     private String genre;
     private Date dateStart;
+
     private Date dateEnd;
 
-    @OneToMany(mappedBy = "movie")
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     private List<ScheduleMovie> scheduleMovieList;
 }

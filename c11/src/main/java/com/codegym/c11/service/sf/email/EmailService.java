@@ -41,7 +41,7 @@ public class EmailService {
 
     private String createBodyText(Ticket ticket) {
         return "Thông tin vé:\t"
-                + "Tên phim: " + ticket.getScheduleMovie().getMovie().getName() + " \t"
+                + "Tên phim: " + ticket.getScheduleMovie().getMovie().getTitle() + " \t"
                 + "Rạp: " + " \t"
                 + "Phòng chiếu: " + ticket.getScheduleMovie().getRoom().getName() + " \t"
                 + "Ngày chiếu: " + ticket.getScheduleMovie().getSchedule().getShowDate() + " \t"
