@@ -22,6 +22,8 @@ public class JwtProvider {
     public String generateTokenLogin(Account account) {
 
         return Jwts.builder()
+                .setSubject(account.getUsername())
+                .claim("username", account.getUsername())
                 .setSubject((account.getUsername()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + EXPIRE_TIME * 1000))

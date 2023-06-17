@@ -41,7 +41,6 @@ public class TicketController {
                 PageResponseDto<TicketResponseDto> tickets = ticketService.getTicketByUser(username);
                 return new ResponseEntity<>(tickets, HttpStatus.OK);
             } else {
-                // Handle the case when the username attribute is not found
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
             }
         } catch (Exception e) {
