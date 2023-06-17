@@ -38,6 +38,9 @@ public class Account {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "img")
+    private String img;
+
     @OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<AccountRoles> rolesList;
 

@@ -15,13 +15,15 @@ import java.util.Date;
 @Service
 public class JwtProvider {
 
-    private static final String SECRET_KEY = "application";
-    private static final long EXPIRE_TIME = 86400000000L;
+    private static final String SECRET_KEY = "cgcinema11";
+    private static final long EXPIRE_TIME = 1000 * 60 * 1000;
     private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class.getName());
 
     public String generateTokenLogin(Account account) {
 
         return Jwts.builder()
+                .setSubject(account.getUsername())
+                .claim("username", account.getUsername())
                 .setSubject((account.getUsername()))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + EXPIRE_TIME * 1000))

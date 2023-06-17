@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "${app.cors.allowedOrigins}")
 @RequestMapping("/api/movies")
 public class MovieController {
 
