@@ -19,6 +19,6 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<IRoomDto> findAllSeatByIdRoom(Long id) {
-        return roomRepository.findAllSeatInRoomId(Long.valueOf(id));
+        return roomRepository.findAllSeatInRoomId(id);
     }
 }

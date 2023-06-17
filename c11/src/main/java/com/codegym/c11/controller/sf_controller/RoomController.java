@@ -19,8 +19,8 @@ public class RoomController {
     private RoomService service;
 
     @GetMapping("/{id}")
-    private ResponseEntity<List<IRoomDto>> getRoomById(@PathVariable("id") Long id){
-        List<IRoomDto> RoomDtoList = service.findAllSeatByIdRoom(id) ;
+    private ResponseEntity<List<IRoomDto>> getRoomById(@PathVariable("id") String id){
+        List<IRoomDto> RoomDtoList = service.findAllSeatByIdRoom(Long.valueOf(id)) ;
         if (RoomDtoList.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

@@ -3,7 +3,7 @@ package com.codegym.c11.controller.sf_controller;
 import com.codegym.c11.exception.api.ResourceNotFoundException;
 import com.codegym.c11.exception.api.ValidationException;
 import com.codegym.c11.model.dto.request.AccountRequestDto;
-import com.codegym.c11.model.dto.response.EmailResponseDto;
+import com.codegym.c11.model.dto.response.AccountResponseDto;
 import com.codegym.c11.model.entity.Account;
 import com.codegym.c11.service.sf.IAccountService;
 import com.codegym.c11.utils.AccountMapper;
@@ -13,8 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController(value = "sfAccountController")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "${app.cors.allowedOrigins}")
 @RequestMapping("/api/sf/account")
 public class AccountController {
 
@@ -26,6 +28,45 @@ public class AccountController {
 
     @Autowired
     private EmailService emailService;
+
+    @GetMapping("/profile")
+    public ResponseEntity<?> getProfile(HttpServletRequest request) {
+        try {
+            String username = (String) request.getAttribute("username");
+
+            if (username!= null) {
+                Account account = accountService.findByUsername(username);
+
+                if (account != null) {
+                    AccountResponseDto accountDto = accountMapper.convertFromEntityToDto(account);
+                    return new ResponseEntity<>(accountDto, HttpStatus.OK);
+                }
+            }
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Could not get account.");
+        }
+    }
+
+//    @GetMapping("/profile")
+//    public ResponseEntity<?> getProfile(HttpServletRequest request) {
+//        try {
+//            String username = (String) request.getAttribute("username");
+//            if (username != null) {
+//                Account account = accountService.findByUsername(username);
+//                if (account != null) {
+//                    AccountResponseDto accountResponseDto = accountMapper.convertFromEntityToDto(account);
+//                    return new ResponseEntity<>(accountResponseDto, HttpStatus.OK);
+//                }
+//            } else {
+//                // Handle the case when the username attribute is not found
+//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+//            }
+//        } catch (ResourceNotFoundException e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Could not get account.");
+//        }
+//        return null;
+//    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AccountRequestDto accountDto) {
@@ -51,7 +92,7 @@ public class AccountController {
 
             if (validateAccount) {
                 accountService.saveNewAccount(newAccount);
-                emailService.sendAccountConfirmEmail(newAccount.getEmail());
+//                emailService.sendAccountConfirmEmail(newAccount.getEmail());
                 return new ResponseEntity<>(newAccount, HttpStatus.OK);
             } else {
                 throw new ValidationException("Invalid account");

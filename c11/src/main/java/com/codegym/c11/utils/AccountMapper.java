@@ -21,4 +21,9 @@ public class AccountMapper {
         return accountEntity;
     }
 
+    public AccountResponseDto convertFromEntityToDto(Account account) {
+        AccountResponseDto accountResponseDto = new AccountResponseDto();
+        BeanUtils.copyProperties(account, accountResponseDto);
+        return accountResponseDto;
+    }
 }
