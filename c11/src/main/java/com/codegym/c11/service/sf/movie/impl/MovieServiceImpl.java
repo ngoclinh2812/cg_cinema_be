@@ -115,7 +115,8 @@ public class MovieServiceImpl implements MovieService {
         }
         return responseDtos;
     }
-    private String checkMovieStatus(Date dateStart, Date dateEnd, LocalDate currentDate) {
+    @Override
+    public String checkMovieStatus(Date dateStart, Date dateEnd, LocalDate currentDate) {
         LocalDate startDate = dateStart.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate endDate = dateEnd.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
