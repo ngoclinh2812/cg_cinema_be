@@ -14,5 +14,6 @@ public interface ITheaterDto {
     String getShow_date();
     String getRoom_name();
     Long getRoom_id();
-
+    Long getMovie_id();
+    Long getSchedule_id();
 }

@@ -1,5 +1,3 @@
--- Thêm status cho bảng ticket
-
 drop database if exists cinema_dev;
 create database cinema_dev;
 use cinema_dev;
@@ -12,21 +10,20 @@ phone varchar(255) NOT NULL,
 img varchar(255)
 );
 
-drop table if exists movie;
-create table movie (
-id BIGINT auto_increment primary key,
-name varchar(255) not null,
-description varchar(255) not null,
-trailer varchar(255) not null,
-img varchar(255) not null,
-date_start date default null,
-date_end date default null,
-CHECK (date_end > date_start)
+DROP TABLE IF EXISTS movie;
+CREATE TABLE movie (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  title VARCHAR(255) NOT NULL,
+  summary VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
+  duration VARCHAR(255) NOT NULL,
+  trailer VARCHAR(255),
+  image_url VARCHAR(255),
+  rating INT,
+  date_start DATE,
+  date_end DATE,
+  status ENUM('NOW_SHOWING', 'COMING_SOON')
 );
-alter table movie add column genre varchar(255) not null;
-alter table movie add column duration varchar(255) not null;
-alter table movie add column rating varchar(255) not null;
-alter table movie modify column duration int not null;
 
 
 create table schedule (
@@ -130,7 +127,6 @@ foreign key (schedule_movie_id) references schedule_movie(id),
 foreign key (seat_1) references seat(id)
 );
 alter table ticket rename column seat_1 TO seat;
-alter table ticket add column status enum('confirmed', 'unconfirmed') default 'unconfirmed';
 
 -- Chèn dữ liệu vào bảng "theater"
 INSERT INTO theater (name, address, phone, img) VALUES
@@ -141,23 +137,69 @@ INSERT INTO theater (name, address, phone, img) VALUES
 ('Theater 5', '555 Pine Road', '555-555-5555', 'theater5.jpg');
 
 -- Chèn dữ liệu vào bảng "movie"
-INSERT INTO movie  (name, description, trailer, img, genre, duration, rating, date_start, date_end)
-VALUES
-('Avengers: Endgame', 'The Avengers must assemble once again to defeat Thanos.', 'https://www.youtube.com/watch?v=TcMBFSGVi1c', 'https://images.squarespace-cdn.com/content/v1/556489d4e4b064c1f32b6812/1452895990247-CD7HVX82NTS3U3SSKZCB/the_avengers.jpg', 'Action, Adventure, Sci-Fi', '170','8.0', '2023-08-01', '2023-08-15'),
-('Spider-Man: No Way Home', 'Peter Parker''s identity is revealed, and he seeks help from Doctor Strange.', 'https://www.youtube.com/watch?v=g4Hbz2jLxvQ', 'https://clipartix.com/wp-content/uploads/2019/02/spiderman-clipart-2019-15.jpg', 'Action, Adventure, Fantasy', '180','7.8', '2023-07-01', '2023-07-15'),
-('Black Widow', 'Natasha Romanoff confronts her past and deals with dangerous conspiracies.', 'https://www.youtube.com/watch?v=Fp9pNPdNwjI', 'https://cdn.galaxycine.vn/media/2023/6/1/300x450_1685607263025.jpg', 'Action, Adventure, Thriller', '160','6.8', '2023-06-01', '2023-06-15'),
-('Shang-Chi and the Legend of the Ten Rings', 'Shang-Chi must confront the past he thought he left behind when he is drawn into the web of the mysterious Ten Rings organization.', 'https://www.youtube.com/watch?v=8YjFbMbfXaQ', 'shangchi.jpg', 'Action, Adventure, Fantasy', '175','7.8', '2023-11-01', '2023-11-15'),
-('Eternals', 'A group of immortal beings known as the Eternals come out of hiding to protect humanity from their evil counterparts, the Deviants.', 'https://www.youtube.com/watch?v=0WVDKZJkGlY', 'eternals.jpg', 'Action, Adventure, Drama', '150','', '2023-09-01', '2023-09-15'),
-('Wonder Woman 1984', 'Diana Prince faces off against Maxwell Lord and the Cheetah as she navigates life in the 1980s.', 'https://www.youtube.com/watch?v=sfM7_JLk-84', 'wonderwoman.jpg', 'Action, Adventure, Fantasy', '120','7.0', '2023-10-01', '2023-10-15');
-UPDATE `cinema_dev`.`movie` SET `trailer` = 'TcMBFSGVi1c' WHERE (`id` = '1');
-UPDATE `cinema_dev`.`movie` SET `trailer` = 'OB3g37GTALc' WHERE (`id` = '2');
-UPDATE `cinema_dev`.`movie` SET `trailer` = 'ybji16u608U' WHERE (`id` = '3');
-UPDATE `cinema_dev`.`movie` SET `trailer` = '8YjFbMbfXaQ' WHERE (`id` = '4');
-UPDATE `cinema_dev`.`movie` SET `trailer` = 'x_me3xsvDgk' WHERE (`id` = '5');
-UPDATE `cinema_dev`.`movie` SET `trailer` = 'sfM7_JLk-84' WHERE (`id` = '6');
-UPDATE `cinema_dev`.`movie` SET `img` = 'https://images2.thanhnien.vn/Uploaded/hoalp/2021_12_07/shang-chi-761.jpg' WHERE (`id` = '4');
-UPDATE `cinema_dev`.`movie` SET `img` = 'https://images.immediate.co.uk/production/volatile/sites/3/2022/01/eternals_genavailposter_v3_jan12_lg_a0c7298d-06382e0-e1641845488919.jpg?quality=90&crop=9px,0px,1670px,1112px&resize=980,654' WHERE (`id` = '5');
-UPDATE `cinema_dev`.`movie` SET `img` = 'https://sm.ign.com/t/ign_ap/review/w/wonder-wom/wonder-woman-review_58qv.1200.png' WHERE (`id` = '6');
+
+-- Insert movies with 'NOW_SHOWING' status
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('The Lion King', 'A young lion prince must reclaim his kingdom from his treacherous uncle, with the help of his newfound friends.', 'The Lion King is a beloved Disney animated film, featuring memorable characters and a heartwarming story.', '1h 58min', 'https://www.youtube.com/watch?v=4CbLXeGSDxg', 'amz.woka.io/images/I/81BMmrwSFOL.jpg', 8, '2019-07-19', NULL, 'NOW_SHOWING');
+
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('The Avengers', 'Earth\'s mightiest heroes must come together and fight against an extraterrestrial threat to save the planet.', 'The Avengers is a superhero film that brings together iconic Marvel characters in an epic battle for the fate of humanity.', '2h 23min', 'https://www.youtube.com/watch?v=eOrNdBpGMv8', 'https://raisingchildren.net.au/__data/assets/image/0034/49876/avengers.jpg', 8, '2012-05-04', NULL, 'NOW_SHOWING');
+
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('Titanic', 'A forbidden love story unfolds aboard the RMS Titanic as the ill-fated ship heads towards its tragic destiny.', 'Titanic is an epic romance film that captures the grandeur and tragedy of the legendary ocean liner.', '3h 14min', 'https://www.youtube.com/watch?v=2e-eXJ6HgkQ', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb0D1xpN1DjXXs58g_WErq1zxuAqE5bgwfMg&usqp=CAU', 9, '1997-12-19', NULL, 'NOW_SHOWING');
+
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('The Shawshank Redemption', 'Two imprisoned men forge a bond over several years, finding solace and eventual redemption through acts of common decency.', 'The Shawshank Redemption is a critically acclaimed drama that explores the power of hope, friendship, and perseverance in the face of adversity.', '2h 22min', 'https://www.youtube.com/watch?v=NmzuHjWmXOc', 'https://ae01.alicdn.com/kf/HTB1mWWMXuGSBuNjSspbq6AiipXaH/The-Shawshank-Redemption-Retro-Vintage-Classic-Movie-Poster-Canvas-Painting-Wall-Sticker-Home-Art-Home-Decoration.jpg', 9, '1994-10-14', NULL, 'NOW_SHOWING');
+
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('Forrest Gump', 'A slow-witted but kind-hearted man witnesses and unwittingly influences several defining historical events in the 20th century.', 'Forrest Gump is a heartwarming drama that follows the life of Forrest Gump, an ordinary man with an extraordinary story.', '2h 22min', 'https://www.youtube.com/watch?v=bLvqoHBptjg', 'https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_FMjpg_UX1000_.jpg', 9, '1994-07-06', NULL, 'NOW_SHOWING');
+
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('The Dark Knight', 'Batman must confront the Joker, a sadistic criminal mastermind, who plans to unleash chaos and anarchy upon Gotham City.', 'The Dark Knight is a superhero film that explores the dark and complex nature of Batman\'s character, as he battles the Joker to protect the city he loves.', '2h 32min', 'https://www.youtube.com/watch?v=EXeTwQWrcwY', 'https://www.example.com/images/dark_knight.jpg', 9, '2008-07-18', NULL, 'NOW_SHOWING');
+
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('Inception', 'A thief who steals corporate secrets through dream-sharing technology is given the task of planting an idea into the mind of a CEO.', 'Inception is a mind-bending science fiction film directed by Christopher Nolan, featuring a complex plot that explores the nature of dreams and reality.', '2h 28min', 'https://www.youtube.com/watch?v=YoHD9XEInc0', 'https://www.example.com/images/inception.jpg', 8, '2010-07-16', NULL, 'NOW_SHOWING');
+
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('Interstellar', 'A team of explorers embarks on a space mission to find a new habitable planet as Earth faces a global catastrophe.', 'Interstellar is a sci-fi film that combines elements of space exploration, time dilation, and human survival, directed by Christopher Nolan.', '2h 49min', 'https://www.youtube.com/watch?v=zSWdZVtXT7E', 'https://www.example.com/images/interstellar.jpg', 9, '2014-11-07', NULL, 'NOW_SHOWING');
+
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('The Shawshank Redemption', 'Two imprisoned men forge a bond over several years, finding solace and eventual redemption through acts of common decency.', 'The Shawshank Redemption is a critically acclaimed drama that explores the power of hope, friendship, and perseverance in the face of adversity.', '2h 22min', 'https://www.youtube.com/watch?v=NmzuHjWmXOc', 'https://www.example.com/images/shawshank_redemption.jpg', 9, '1994-10-14', NULL, 'NOW_SHOWING');
+
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('Pulp Fiction', 'The lives of two mob hitmen, a boxer, a gangster, and his wife intertwine in a series of unexpected and often violent events.', 'Pulp Fiction is a cult classic directed by Quentin Tarantino, known for its nonlinear narrative, memorable characters, and witty dialogue.', '2h 34min', 'https://www.youtube.com/watch?v=s7EdQ4FqbhY', 'https://www.example.com/images/pulp_fiction.jpg', 8, '1994-10-14', NULL, 'NOW_SHOWING');
+
+
+-- Insert 5 more movies with 'COMING_SOON' status
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('The Batman', 'A new dark knight rises in Gotham City, battling against the criminal underworld and his own inner demons.', 'The Batman is a reboot of the Batman film franchise, showcasing a grittier and more grounded take on the iconic superhero.', 'TBD', 'https://www.youtube.com/watch?v=OMR9UJOlN_8', 'https://www.example.com/images/the_batman.jpg', 0, NULL, NULL, 'COMING_SOON');
+
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('Avatar 3', 'Jake Sully and Neytiri continue their adventures on the planet Pandora, facing new threats and uncovering ancient secrets.', 'Avatar 3 is the third installment in the Avatar film series, expanding the immersive world of Pandora and its inhabitants.', 'TBD', 'https://www.youtube.com/watch?v=TBD', 'https://www.example.com/images/avatar_3.jpg', 0, NULL, NULL, 'COMING_SOON');
+
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('Guardians of the Galaxy Vol. 3', 'Star-Lord and his misfit team of Guardians embark on a new cosmic adventure, facing cosmic threats and rediscovering the meaning of family.', 'Guardians of the Galaxy Vol. 3 is the third installment in the Guardians of the Galaxy film series, combining humor, action, and heart in a galactic journey.', 'TBD', 'https://www.youtube.com/watch?v=TBD', 'https://www.example.com/images/guardians_of_the_galaxy_vol_3.jpg', 0, NULL, NULL, 'COMING_SOON');
+
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('Indiana Jones 5', 'Renowned archaeologist Indiana Jones embarks on a new adventure, exploring ancient artifacts and battling against dangerous adversaries.', 'Indiana Jones 5 continues the iconic adventure series, with Harrison Ford returning as the whip-wielding archaeologist.', 'TBD', 'https://www.youtube.com/watch?v=TBD', 'https://www.example.com/images/indiana_jones_5.jpg', 0, NULL, NULL, 'COMING_SOON');
+
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('Fantastic Beasts and Where to Find Them 3', 'Newt Scamander\'s journey takes him to new locations and introduces him to new magical creatures and dangers.', 'Fantastic Beasts and Where to Find Them 3 is the third installment in the Fantastic Beasts series, delving deeper into the wizarding world of J.K. Rowling.', 'TBD', 'https://www.youtube.com/watch?v=TBD', 'https://www.example.com/images/fantastic_beasts_3.jpg', 0, NULL, NULL, 'COMING_SOON');
+
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('Matrix 4', 'Neo returns to the Matrix, trapped in a simulated reality, as he discovers new threats and challenges.', 'Matrix 4 is the highly anticipated sequel to the Matrix trilogy, continuing the story of Neo and his battle against the machines.', 'TBD', 'https://www.youtube.com/watch?v=TBD', 'https://www.example.com/images/matrix_4.jpg', 0, NULL, NULL, 'COMING_SOON');
+
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('Jurassic World: Dominion', 'The dinosaurs now roam freely on the mainland, and humans must contend with their existence in an increasingly dangerous world.', 'Jurassic World: Dominion is the latest installment in the Jurassic Park franchise, featuring new threats and a battle for survival.', 'TBD', 'https://www.youtube.com/watch?v=TBD', 'https://www.example.com/images/jurassic_world_dominion.jpg', 0, NULL, NULL, 'COMING_SOON');
+
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('Fantastic Beasts: The Secrets of Dumbledore', 'Newt Scamander teams up with Albus Dumbledore to take on dark forces threatening the wizarding world.', 'Fantastic Beasts: The Secrets of Dumbledore is the third installment in the Fantastic Beasts series, expanding the wizarding world created by J.K. Rowling.', 'TBD', 'https://www.youtube.com/watch?v=TBD', 'https://www.example.com/images/fantastic_beasts_secrets_of_dumbledore.jpg', 0, NULL, NULL, 'COMING_SOON');
+
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('Avatar 2', 'Jake Sully and Neytiri return to the planet Pandora, facing new challenges and discovering more about the alien world.', 'Avatar 2 is the long-awaited sequel to the groundbreaking film Avatar, delving deeper into the world of Pandora and its inhabitants.', 'TBD', 'https://www.youtube.com/watch?v=TBD', 'https://www.example.com/images/avatar_2.jpg', 0, NULL, NULL, 'COMING_SOON');
+
+INSERT INTO movie (title, summary, description, duration, trailer, image_url, rating, date_start, date_end, status)
+VALUES ('The Flash', 'Barry Allen, aka The Flash, travels back in time to prevent his mother\'s murder and encounters unexpected consequences.', 'The Flash is a superhero film based on the DC Comics character, exploring the concept of time travel and alternate timelines.', 'TBD', 'https://www.youtube.com/watch?v=TBD', 'https://www.example.com/images/the_flash.jpg', 0, NULL, NULL, 'COMING_SOON');
 
 -- Chèn dữ liệu vào bảng "schedule"
 INSERT INTO schedule (show_time, show_date) VALUES
@@ -520,7 +562,7 @@ DELIMITER //
 CREATE TRIGGER account_delete_trigger AFTER DELETE ON account
 FOR EACH ROW
 BEGIN
-    -- Delete the corresponding record from account_role table
+    -- Delete the corresponding record from account_role table
     DELETE FROM account_role WHERE account_id = OLD.id;
 END //
 DELIMITER ;

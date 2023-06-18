@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController("movieController")
 @CrossOrigin(origins = "${app.cors.allowedOrigins}")
 @RequestMapping("/api/movies")
 public class MovieController {
@@ -30,17 +30,17 @@ public class MovieController {
         }
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<?> findByName(
-            @RequestParam(value = "name") String name,
-            @PageableDefault(size = 30) Pageable pageable) {
-        try {
-            PageResponseDto<MovieResponseDto> movieDtos = movieService.findByName(name, pageable);
-            return new ResponseEntity<>(movieDtos, HttpStatus.OK);
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
-        }
-    }
+//    @GetMapping("/search")
+//    public ResponseEntity<?> findByName(
+//            @RequestParam(value = "name") String name,
+//            @PageableDefault(size = 30) Pageable pageable) {
+//        try {
+//            PageResponseDto<MovieResponseDto> movieDtos = movieService.findByName(name, pageable);
+//            return new ResponseEntity<>(movieDtos, HttpStatus.OK);
+//        } catch (Exception ex) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+//        }
+//    }
 
     @GetMapping("/ongoing")
     public ResponseEntity<PageResponseDto<MovieResponseDto>> findOnGoingMovies(){

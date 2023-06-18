@@ -20,7 +20,16 @@ import java.util.stream.Collectors;
 public class TicketMapper {
 
     @Autowired
+    private MovieMapper movieMapper;
+
+    @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private RoomMapper roomMapper;
+
+    @Autowired
+    private ScheduleMapper scheduleMapper;
 
     @Autowired
     private IAccountService accountService;
@@ -48,18 +57,24 @@ public class TicketMapper {
         return null;
     }
 
-    private Seat convertToSeatEntity(SeatDto seatDto) {
+    public Seat convertToSeatEntity(SeatDto seatDto) {
         Seat seatEntity = new Seat();
         BeanUtils.copyProperties(seatDto, seatEntity);
         return seatEntity;
     }
 
-    private ScheduleMovie convertToScheduleMovieEntity(ScheduleMovieDto scheduleMovieDto) {
+    public ScheduleMovie convertToScheduleMovieEntity(ScheduleMovieDto scheduleMovieDto) {
         ScheduleMovie scheduleMovie = new ScheduleMovie();
         BeanUtils.copyProperties(scheduleMovieDto, scheduleMovie);
         return scheduleMovie;
     }
 
-
-
+    public ScheduleMovie mapDtoToEntity(ScheduleMovieDto scheduleMovieDto) {
+        ScheduleMovie scheduleMovie = new ScheduleMovie();
+        BeanUtils.copyProperties(scheduleMovieDto, scheduleMovie);
+        scheduleMovie.setMovie(movieMapper.requestDtoToEntity(scheduleMovieDto.getMovie()));
+        scheduleMovie.setRoom(roomMapper.requestDtoToEntity(scheduleMovieDto.getRoom()));
+        scheduleMovie.setSchedule(scheduleMapper.requestDtoToEntity(scheduleMovieDto.getSchedule()));
+        return scheduleMovie;
+    }
 }

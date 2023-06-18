@@ -32,15 +32,12 @@ public class TicketController {
     private TicketService ticketService;
 
     @Autowired
-    private EmailService emailService;
-
-    @Autowired
     private IAccountService accountService;
 
     @Autowired
     private AccountMapper accountMapper;
 
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<?> getUserTickets(HttpServletRequest request) {
         try {
             String username = (String) request.getAttribute("username");
@@ -76,9 +73,8 @@ public class TicketController {
             }
         } catch (ResourceNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-        } catch (EmailSendingException ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         } catch (Exception ex) {
+            ex.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
         }
     }

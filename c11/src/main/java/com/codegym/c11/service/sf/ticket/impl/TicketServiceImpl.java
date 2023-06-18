@@ -12,6 +12,7 @@ import com.codegym.c11.service.sf.scheduleMovie.IScheduleMovieService;
 import com.codegym.c11.service.sf.seat.ISeatService;
 import com.codegym.c11.service.sf.ticket.TicketService;
 import com.codegym.c11.utils.AccountMapper;
+import com.codegym.c11.utils.TicketMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +32,8 @@ public class TicketServiceImpl implements TicketService {
     private AccountMapper accountMapper;
 
     @Autowired
+    private TicketMapper ticketMapper;
+    @Autowired
     private IAccountService accountService;
 
     @Autowired
@@ -42,14 +45,14 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Transactional
     public Ticket save(TicketRequestDto ticketDto) {
-
         Ticket ticket = new Ticket();
 
         Account account = accountService.findById(ticketDto.getAccount().getId());
+
         ScheduleMovie scheduleMovie = iScheduleMovie.getScheduleMovieByMovieRoomSchedule(
-                                            ticketDto.getScheduleMovie().getMovie().getId(),
-                                            ticketDto.getScheduleMovie().getSchedule().getId(),
-                                            ticketDto.getScheduleMovie().getRoom().getId());
+                ticketDto.getScheduleMovie().getMovie().getId(),
+                ticketDto.getScheduleMovie().getSchedule().getId(),
+                ticketDto.getScheduleMovie().getRoom().getId());
         Seat seat = seatService.getSeatById(ticketDto.getSeat().getId());
 
         if ((account != null) && (scheduleMovie != null) && (seat != null)) {

@@ -9,9 +9,11 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "role", cascade = CascadeType.PERSIST,fetch = FetchType.LAZY)
     private List<AccountRoles> accountRoles;
 
     public Role(Long id, String name) {
