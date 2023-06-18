@@ -39,6 +39,4 @@ public class ScheduleMovie {
 
     @OneToMany(mappedBy = "scheduleMovie")
     private List<Ticket> ticketList;
-
-
 }
