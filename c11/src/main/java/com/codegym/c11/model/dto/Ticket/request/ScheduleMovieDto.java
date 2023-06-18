@@ -11,6 +11,7 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ScheduleMovieDto implements Serializable {
 
+
     private Long id;
     private MovieRequestDto movie;
     private RoomRequestDto room;

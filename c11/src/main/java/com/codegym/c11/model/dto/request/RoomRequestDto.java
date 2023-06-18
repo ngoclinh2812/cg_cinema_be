@@ -10,4 +10,5 @@ import java.util.List;
 @Data
 public class RoomRequestDto {
     private Long id;
+    private String name;
 }

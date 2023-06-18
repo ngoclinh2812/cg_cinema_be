@@ -5,7 +5,6 @@ import com.codegym.c11.exception.api.ResourceNotFoundException;
 import com.codegym.c11.model.dto.Ticket.TicketResponseDto;
 import com.codegym.c11.model.dto.Ticket.request.TicketAccountDto;
 import com.codegym.c11.model.dto.Ticket.request.TicketRequestDto;
-import com.codegym.c11.model.dto.request.AccountRequestDto;
 import com.codegym.c11.model.dto.response.PageResponseDto;
 import com.codegym.c11.model.entity.Account;
 import com.codegym.c11.model.entity.Ticket;
@@ -82,6 +81,17 @@ public class TicketController {
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
         }
+    }
+
+    @PostMapping("/confirm")
+    public ResponseEntity<?> confirmTicket(@RequestBody TicketRequestDto ticketRequestDto) {
+        Long ticketId = ticketRequestDto.getId();
+        Ticket ticket = ticketService.getTicketById(ticketId);
+        if (ticket != null) {
+            ticketService.saveConfirmedTicket(ticket);
+            return new ResponseEntity<>("Successfully saved", HttpStatus.OK);
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
     }
 
 }

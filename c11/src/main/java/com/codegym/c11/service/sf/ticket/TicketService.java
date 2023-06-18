@@ -12,4 +12,7 @@ public interface TicketService {
 
     PageResponseDto<TicketResponseDto> getTicketByUser(String username);
 
+    Ticket getTicketById(Long id);
+
+    void saveConfirmedTicket(Ticket ticket);
 }

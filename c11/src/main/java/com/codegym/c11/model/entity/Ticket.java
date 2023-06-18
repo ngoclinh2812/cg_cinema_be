@@ -1,5 +1,7 @@
 package com.codegym.c11.model.entity;
 
+import com.codegym.c11.enums.ESeatStatus;
+import com.codegym.c11.enums.ETicketStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,5 +33,7 @@ public class Ticket {
     @JoinColumn(name = "seat")
     private Seat seat;
 
+    @Enumerated(EnumType.STRING)
+    private ETicketStatus status;
 
 }
