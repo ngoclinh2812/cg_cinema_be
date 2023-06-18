@@ -12,10 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-
-import java.util.List;
-
 @RestController
 @CrossOrigin(origins = "${app.cors.allowedOrigins}")
 @RequestMapping("/api/movies")
@@ -58,6 +54,8 @@ public class MovieController {
         return new ResponseEntity<>(movieDates, HttpStatus.OK);
     }
 
+
+
  @GetMapping("/{movieId}")
     public ResponseEntity<?> findById(
             @PathVariable(value = "movieId") Long id) {
@@ -69,6 +67,5 @@ public class MovieController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Could not find movie.");
         }
     }
-
 }
 
