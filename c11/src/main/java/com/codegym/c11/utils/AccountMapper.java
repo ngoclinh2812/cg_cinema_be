@@ -1,5 +1,6 @@
 package com.codegym.c11.utils;
 
+import com.codegym.c11.model.dto.Ticket.request.TicketAccountDto;
 import com.codegym.c11.model.dto.request.AccountRequestDto;
 import com.codegym.c11.model.dto.response.AccountResponseDto;
 import com.codegym.c11.model.entity.Account;
@@ -25,5 +26,11 @@ public class AccountMapper {
         AccountResponseDto accountResponseDto = new AccountResponseDto();
         BeanUtils.copyProperties(account, accountResponseDto);
         return accountResponseDto;
+    }
+
+    public TicketAccountDto convertFromEntityToRequestDto(Account account) {
+        TicketAccountDto accountRequestDto = new TicketAccountDto();
+        BeanUtils.copyProperties(account, accountRequestDto);
+        return accountRequestDto;
     }
 }

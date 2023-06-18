@@ -7,4 +7,5 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MovieRequestDto {
     private Long id;
+    private String name;
 }

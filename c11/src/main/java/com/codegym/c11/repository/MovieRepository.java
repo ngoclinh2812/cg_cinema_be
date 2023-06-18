@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.Date;
 import java.util.List;
 
@@ -25,10 +24,10 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     @Query("select dateStart from Movie")
     List<Date> findDateStartBy();
 
-    @Query(value = "SELECT * FROM movie WHERE date_start ", nativeQuery = true)
+    @Query(value = "SELECT * FROM movie WHERE (date_start < CURDATE()) and (date_end > CURDATE()); ", nativeQuery = true)
     Page<Movie> findOnGoingMovies(Pageable pageable);
 
-    @Query(value = "SELECT * FROM movie WHERE date_end ", nativeQuery = true)
+    @Query(value = "SELECT * FROM movie WHERE (date_start > CURDATE()) and (date_end > CURDATE());", nativeQuery = true)
     Page<Movie> findComingSoonMovies(Pageable pageable);
 
 
