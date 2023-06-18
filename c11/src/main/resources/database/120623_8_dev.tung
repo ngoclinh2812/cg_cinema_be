@@ -69,12 +69,12 @@ id BIGINT auto_increment primary key,
 name varchar(55) not null,
 roomId BIGINT not null,
 seat_type bigint,
-status enum("0", "1"),
+status enum('EMPTY', 'FULL') DEFAULT 'EMPTY',
 FOREIGN KEY (roomId) REFERENCES room(id),
 FOREIGN KEY (seat_type) REFERENCES seat_type(id)
 );
 alter table seat rename column roomId TO room_id;
-alter table seat modify column status enum("EMPTY", "FULL") DEFAULT "EMPTY";
+alter table seat add column `status` enum('EMPTY', 'FULL') DEFAULT 'EMPTY';
 
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
@@ -95,6 +95,7 @@ CREATE TABLE `role` (
   `name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
+alter table `role` modify column `name` enum('ROLE_USER', 'ROLE_ADMIN') default 'ROLE_USER';
 
 DROP TABLE IF EXISTS `account_role`;
 CREATE TABLE `account_role` (
@@ -107,6 +108,15 @@ CREATE TABLE `account_role` (
   CONSTRAINT `account_roles_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`),
   CONSTRAINT `account_roles_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
 );
+-- Drop the existing foreign key constraint
+ALTER TABLE account_role DROP FOREIGN KEY account_roles_ibfk_1;
+
+-- Recreate the foreign key constraint with ON DELETE CASCADE option
+ALTER TABLE account_role
+ADD CONSTRAINT account_roles_ibfk_1
+FOREIGN KEY (account_id) REFERENCES account (id)
+ON DELETE CASCADE;
+
 
 drop table if exists ticket;
 create table ticket(
@@ -119,8 +129,6 @@ foreign key (schedule_movie_id) references schedule_movie(id),
 foreign key (seat_1) references seat(id)
 );
 alter table ticket rename column seat_1 TO seat;
-
-
 
 -- Chèn dữ liệu vào bảng "theater"
 INSERT INTO theater (name, address, phone, img) VALUES
@@ -201,6 +209,7 @@ INSERT INTO seat (name, room_id, seat_type, status) VALUES
 ('Seat 4', 2, 2, '0'),
 ('Seat 5', 2, 1, '0');
 
+
 -- Chèn dữ liệu vào bảng "account"
 INSERT INTO `account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Ngoc Linh', 'Hoang', '0385281204', 'hngoclinh2812@gmail.com', 'linhoang', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-563642.jpg?w=360');
 INSERT INTO `account` (`first_name`, `last_name`, `phone`, `email`, `username`, `password`, `img`) VALUES ('Ngọc Phương Thảo', 'Lê', '0974608448', 'lengocphuongthao@gmail.com', 'thaole', '$2a$10$WaW5rZmhGYAecSV5BBHvVuLi/ezTtkrEdSk0FmtSvD7Nx3gINznSO', 'https://img.freepik.com/free-icon/user_318-804790.jpg');
@@ -222,7 +231,6 @@ INSERT INTO `account_role` (`account_id`, `role_id`) VALUES ('6', '1');
 INSERT INTO `account_role` (`account_id`, `role_id`) VALUES ('7', '1');
 INSERT INTO `account_role` (`account_id`, `role_id`) VALUES ('8', '2');
 
-
 -- Chèn dữ liệu vào bảng "ticket"
 INSERT INTO ticket (user_id, schedule_movie_id, seat) VALUES
 (1, 1, 1),
@@ -231,3 +239,22 @@ INSERT INTO ticket (user_id, schedule_movie_id, seat) VALUES
 (4, 4, 4),
 (5, 5, 5);
 
+-- Khi account mới được lưu vào database thì account_role sẽ tự động thêm một record mới, có role_id mặc định là user
+DELIMITER //
+CREATE TRIGGER account_insert_trigger AFTER INSERT ON account
+FOR EACH ROW
+BEGIN
+    -- Insert a new record into account_role table
+    INSERT INTO account_role (account_id, role_id) VALUES (NEW.id, 2);
+END //
+DELIMITER ;
+
+-- Khi một account bị xóa, account_role của nó cũng bị xóa theo
+DELIMITER //
+CREATE TRIGGER account_delete_trigger AFTER DELETE ON account
+FOR EACH ROW
+BEGIN
+    -- Delete the corresponding record from account_role table
+    DELETE FROM account_role WHERE account_id = OLD.id;
+END //
+DELIMITER ;
