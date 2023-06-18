@@ -28,6 +28,10 @@ public class Room {
     @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<Seat> seatList;
 
+    public List<ScheduleMovie> getScheduleMovieList() {
+        return scheduleMovieList;
+    }
+
     @OneToMany(mappedBy = "room")
     private List<ScheduleMovie> scheduleMovieList;
 

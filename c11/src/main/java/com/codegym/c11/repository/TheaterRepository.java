@@ -35,6 +35,4 @@ public interface TheaterRepository extends JpaRepository<Theater, Long> {
                     " WHERE t.id = :id ")
     List<ITheaterDto> findTheaterById(@Param("id") Long id);
 
-
-
 }
