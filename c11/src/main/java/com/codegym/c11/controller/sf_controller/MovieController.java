@@ -55,6 +55,7 @@ public class MovieController {
     }
 
 
+
  @GetMapping("/{movieId}")
     public ResponseEntity<?> findById(
             @PathVariable(value = "movieId") Long id) {
