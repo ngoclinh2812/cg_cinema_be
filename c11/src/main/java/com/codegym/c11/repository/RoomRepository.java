@@ -15,6 +15,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             " FROM Seat s " +
             " JOIN s.room r" +
             " JOIN s.seatType st" +
-            " WHERE r.id = :id ")
+            " WHERE r.id = :id " +
+            " ORDER BY s.name ASC ")
     List<IRoomDto> findAllSeatInRoomId(@Param("id") Long id);
 }
