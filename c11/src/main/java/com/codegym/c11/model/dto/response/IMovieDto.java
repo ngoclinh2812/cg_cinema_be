@@ -9,7 +9,6 @@ public interface IMovieDto {
 
     String getTheaterName();
 
-
     String getScheduleShow_time();
 
     String getScheduleShow_date();

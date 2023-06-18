@@ -20,10 +20,9 @@ public class ScheduleMovieServiceImpl implements IScheduleMovieService {
 
     @Override
     public ScheduleMovie getScheduleMovieByMovieRoomSchedule(Long movieId, Long roomId, Long scheduleId) {
-        Optional<ScheduleMovie> searchScheduleMovie = scheduleMovieRepository.searchByMovieRoomSchedule(movieId, roomId, scheduleId);
-        if (searchScheduleMovie.isPresent()) {
+        Optional<ScheduleMovie> searchScheduleMovie = scheduleMovieRepository.searchByMovieRoomSchedule(movieId, scheduleId, roomId);
+
             return searchScheduleMovie.get();
-        }
-        return null;
+
     }
 }

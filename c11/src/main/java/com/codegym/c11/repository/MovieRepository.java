@@ -18,8 +18,8 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     @Query(value = "select m from Movie m ")
     Page<Movie> findAllFilm(Pageable pageable);
 
-    @Query(value = "select * from movie where name like %:name% ORDER BY name ASC", nativeQuery = true)
-    Page<Movie> findByName(@Param("name") String name, Pageable pageable);
+    @Query(value = "select * from movie where title like %:title% ORDER BY name ASC", nativeQuery = true)
+    Page<Movie> findByTitle(@Param("title") String name, Pageable pageable);
 
     @Query("select dateStart from Movie")
     List<Date> findDateStartBy();
@@ -35,6 +35,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     <S extends Movie> boolean exists(Example<S> example);
 
     void deleteAllById(Long id);
+    Page<Movie> findByTitleContainingIgnoreCase(String title, Pageable pageable);
 
     
 }

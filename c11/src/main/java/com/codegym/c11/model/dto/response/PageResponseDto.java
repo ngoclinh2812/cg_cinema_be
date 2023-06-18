@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PageResponseDto<T> implements Serializable {
+public class PageResponseDto<T> {
     private int totalPage;
 
     private long totalRecord;

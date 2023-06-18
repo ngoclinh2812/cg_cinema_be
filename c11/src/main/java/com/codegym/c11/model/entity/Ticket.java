@@ -1,6 +1,5 @@
 package com.codegym.c11.model.entity;
 
-import com.codegym.c11.enums.ESeatStatus;
 import com.codegym.c11.enums.ETicketStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
