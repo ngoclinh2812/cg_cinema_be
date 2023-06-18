@@ -1,6 +1,7 @@
 package com.codegym.c11.service.sf.ticket.impl;
 
 import com.codegym.c11.enums.ESeatStatus;
+import com.codegym.c11.enums.ETicketStatus;
 import com.codegym.c11.model.dto.Ticket.TicketResponseDto;
 import com.codegym.c11.model.dto.Ticket.request.TicketRequestDto;
 import com.codegym.c11.model.dto.response.PageResponseDto;
@@ -62,9 +63,16 @@ public class TicketServiceImpl implements TicketService {
         return ticketRepository.findById(ticket.getId()).orElse(null);
     }
 
+    @Override
     public Ticket getTicketById(Long ticketId) {
         return ticketRepository.findById(ticketId)
                 .orElseThrow(() -> new NoSuchElementException("Ticket not found with ID: " + ticketId));
+    }
+
+    @Override
+    public void saveConfirmedTicket(Ticket ticket) {
+        ticket.setStatus(ETicketStatus.CONFIRMED);
+        ticketRepository.save(ticket);
     }
 
     @Override
@@ -80,4 +88,5 @@ public class TicketServiceImpl implements TicketService {
         responseDto.setDataList(ticketList);
         return responseDto;
     }
+
 }
