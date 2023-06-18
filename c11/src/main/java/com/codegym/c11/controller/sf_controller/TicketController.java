@@ -70,7 +70,7 @@ public class TicketController {
         try {
             Ticket savedTicket = ticketService.save(ticketDto);
             if (savedTicket != null) {
-                return ResponseEntity.ok(savedTicket);
+                return ResponseEntity.ok("Succesfully saved!");
             } else {
                 throw new ResourceNotFoundException("Failed to save the ticket");
             }
