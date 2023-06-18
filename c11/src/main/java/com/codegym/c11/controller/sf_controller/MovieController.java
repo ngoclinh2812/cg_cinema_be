@@ -21,7 +21,7 @@ public class MovieController {
     private MovieService movieService;
 
     @GetMapping("")
-    private ResponseEntity<?> fillAll(@PageableDefault(value = 10) Pageable pageable) {
+    private ResponseEntity<?> fillAll(@PageableDefault(value = 30) Pageable pageable) {
         try {
             PageResponseDto<MovieResponseDto> movies = movieService.findAllMovies(pageable);
             return new ResponseEntity<>(movies, HttpStatus.OK);
@@ -33,7 +33,7 @@ public class MovieController {
     @GetMapping("/search")
     public ResponseEntity<?> findByName(
             @RequestParam(value = "name") String name,
-            @PageableDefault(size = 10) Pageable pageable) {
+            @PageableDefault(size = 30) Pageable pageable) {
         try {
             PageResponseDto<MovieResponseDto> movieDtos = movieService.findByName(name, pageable);
             return new ResponseEntity<>(movieDtos, HttpStatus.OK);
