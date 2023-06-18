@@ -37,7 +37,7 @@ public class ScheduleMovie {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Room room;
 
-    @OneToMany(mappedBy = "scheduleMovie")
+    @OneToMany(mappedBy = "scheduleMovie", fetch = FetchType.LAZY)
     private List<Ticket> ticketList;
 
 

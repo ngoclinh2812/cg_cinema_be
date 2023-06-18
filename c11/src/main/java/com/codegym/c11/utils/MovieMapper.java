@@ -1,5 +1,6 @@
 package com.codegym.c11.utils;
 
+import com.codegym.c11.model.dto.request.MovieRequestDto;
 import com.codegym.c11.model.dto.response.MovieResponseDto;
 
 import com.codegym.c11.model.entity.Movie;
@@ -7,12 +8,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@Service
 public class MovieMapper {
     public MovieResponseDto entitiesDto(Movie movie){
            MovieResponseDto movieDtos = new MovieResponseDto();
@@ -25,6 +28,12 @@ public class MovieMapper {
         return movieDto;
     }
     public Movie DtoToEntity (MovieResponseDto movieDto){
+        Movie movie = new Movie();
+        BeanUtils.copyProperties(movieDto, movie);
+        return movie;
+    }
+
+    public Movie requestDtoToEntity (MovieRequestDto movieDto){
         Movie movie = new Movie();
         BeanUtils.copyProperties(movieDto, movie);
         return movie;

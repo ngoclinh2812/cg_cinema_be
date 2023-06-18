@@ -30,17 +30,17 @@ public class MovieController {
         }
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<?> findByName(
-            @RequestParam(value = "name") String name,
-            @PageableDefault(size = 30) Pageable pageable) {
-        try {
-            PageResponseDto<MovieResponseDto> movieDtos = movieService.findByName(name, pageable);
-            return new ResponseEntity<>(movieDtos, HttpStatus.OK);
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
-        }
-    }
+//    @GetMapping("/search")
+//    public ResponseEntity<?> findByName(
+//            @RequestParam(value = "name") String name,
+//            @PageableDefault(size = 30) Pageable pageable) {
+//        try {
+//            PageResponseDto<MovieResponseDto> movieDtos = movieService.findByName(name, pageable);
+//            return new ResponseEntity<>(movieDtos, HttpStatus.OK);
+//        } catch (Exception ex) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+//        }
+//    }
 
     @GetMapping("/ongoing")
     public ResponseEntity<PageResponseDto<MovieResponseDto>> findOnGoingMovies(){
