@@ -3,11 +3,16 @@ package com.codegym.c11.controller.sf_controller;
 import com.codegym.c11.exception.api.EmailSendingException;
 import com.codegym.c11.exception.api.ResourceNotFoundException;
 import com.codegym.c11.model.dto.Ticket.TicketResponseDto;
+import com.codegym.c11.model.dto.Ticket.request.TicketAccountDto;
 import com.codegym.c11.model.dto.Ticket.request.TicketRequestDto;
+import com.codegym.c11.model.dto.request.AccountRequestDto;
 import com.codegym.c11.model.dto.response.PageResponseDto;
+import com.codegym.c11.model.entity.Account;
 import com.codegym.c11.model.entity.Ticket;
+import com.codegym.c11.service.sf.IAccountService;
 import com.codegym.c11.service.sf.email.EmailService;
 import com.codegym.c11.service.sf.ticket.TicketService;
+import com.codegym.c11.utils.AccountMapper;
 import com.codegym.c11.utils.TicketMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +35,12 @@ public class TicketController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private IAccountService accountService;
+
+    @Autowired
+    private AccountMapper accountMapper;
+
     @GetMapping
     public ResponseEntity<?> getUserTickets(HttpServletRequest request) {
         try {
@@ -46,11 +57,21 @@ public class TicketController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> createTicket(@RequestBody TicketRequestDto ticketDto) {
+    public ResponseEntity<?> createTicket(@RequestBody TicketRequestDto ticketDto, HttpServletRequest request) {
+        String username = (String) request.getAttribute("username");
+        Account account = accountService.findByUsername(username);
+
+        if (account == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
+        TicketAccountDto accountDto = accountMapper.convertFromEntityToRequestDto(account);
+        ticketDto.setAccount(accountDto);
+
         try {
             Ticket savedTicket = ticketService.save(ticketDto);
             if (savedTicket != null) {
-                    return ResponseEntity.ok(savedTicket);
+                return ResponseEntity.ok(savedTicket);
             } else {
                 throw new ResourceNotFoundException("Failed to save the ticket");
             }
@@ -62,7 +83,5 @@ public class TicketController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
         }
     }
-
-
 
 }

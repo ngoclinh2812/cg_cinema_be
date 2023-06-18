@@ -10,8 +10,4 @@ import java.util.List;
 @Data
 public class RoomRequestDto {
     private Long id;
-    private String name;
-    private Theater TheaterId;
-    private List<Seat> seatList;
-    private List<ScheduleMovie> scheduleMovieList;
 }
